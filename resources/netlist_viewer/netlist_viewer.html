@@ -1,0 +1,43 @@
+<html>
+
+<head>
+    <script type="text/javascript" src="libs/elk.bundled.js"></script>
+    <script type="text/javascript" src="libs/netlistsvg.bundle.js"></script>
+    <script type="text/javascript" src="libs/jquery-2.2.4.min.js"></script>
+    <script type="text/javascript" src="libs/svg-pan-zoom.min.js"></script>
+    <script type="text/javascript" src="libs/viz.js"></script>
+    <script type="text/javascript" src="libs/main.js"></script>
+
+    <link rel="stylesheet" href="netlist_viewer.css" type="text/css" />
+    <style type="text/css">
+        .noedit {
+            color: #666;
+        }
+        
+        body {
+            color: black;
+            background-color: white;
+        }
+    </style>
+</head>
+
+<body id="body_element">
+    <div class="toolbar">
+        <div class="center-panel">
+            <label class="fancy-checkbox">
+                <input id="export-as-image" type="radio" value="fit" />
+                <div class="button">Save as SVG</div>
+            </label>
+        </div>
+    </div>
+
+    <p></p>
+
+    <div id="graph" style="text-align: center;"></div>
+    <div id="main">
+        <div id="netlist_container"></div>
+        <p id="wave">&nbsp;</p>
+    </div>
+</body>
+
+</html>
