@@ -17,9 +17,11 @@
 // along with TerosHDL.  If not, see <https://www.gnu.org/licenses/>.
 
 import * as vscode from 'vscode';
+import * as path_lib from 'path';
+
 import { Multi_project_manager } from 'teroshdl2/out/project_manager/multi_project_manager';
 
-import { Output_channel } from './lib/utils/output_channel';
+import { Output_channel } from './utils/output_channel';
 
 import { Template_manager } from "./features/templates";
 import { Documenter_manager } from "./features/documenter";
@@ -31,15 +33,20 @@ import { Completions_manager } from "./features/completions/completions";
 import { Number_hover_manager } from "./features/number_hover";
 import { Shutter_mode_manager } from "./features/shutter_mode";
 import { Config_manager } from "./features/config";
+import { Project_manager } from "./features/project/project_manager";
+import * as teroshdl2 from 'teroshdl2';
+
+const CONFIG_FILENAME = '.teroshdl2_config.json';
 
 export class Teroshdl {
     private context: vscode.ExtensionContext;
-    // private template_manager : Template_manager;
     private manager: Multi_project_manager;
     private output_channel: Output_channel;
 
     constructor(context: vscode.ExtensionContext, output_channgel: Output_channel) {
-        this.manager = new Multi_project_manager("", "/home/carlos/Desktop/myconfig.json");
+        const homedir = teroshdl2.utils.common.get_home_directory();
+        const file_config_path = path_lib.join(homedir, CONFIG_FILENAME);
+        this.manager = new Multi_project_manager("", file_config_path);
         this.context = context;
         this.output_channel = output_channgel;
     }
@@ -55,6 +62,7 @@ export class Teroshdl {
         this.init_number_hover();
         this.init_shutter_mode();
         this.init_config();
+        this.init_project();
     }
 
     private init_template_manager() {
@@ -95,6 +103,10 @@ export class Teroshdl {
 
     private init_config() {
         new Config_manager(this.context, this.output_channel, this.manager);
+    }
+
+    private init_project() {
+        new Project_manager(this.context);
     }
 
 }

@@ -14,9 +14,9 @@
 /* eslint-disable @typescript-eslint/class-name-casing */
 import * as vscode from 'vscode';
 import * as teroshdl2 from 'teroshdl2';
-import * as Output_channel_lib from '../lib/utils/output_channel';
+import * as Output_channel_lib from '../utils/output_channel';
 import { Multi_project_manager } from 'teroshdl2/out/project_manager/multi_project_manager';
-import * as utils from '../lib/utils/utils';
+import * as utils from '../utils/utils';
 
 const ERROR_CODE = Output_channel_lib.ERROR_CODE;
 

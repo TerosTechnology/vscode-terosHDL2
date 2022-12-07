@@ -20,8 +20,8 @@
 // along with Colibri.  If not, see <https://www.gnu.org/licenses/>.
 
 import * as vscode from 'vscode';
-import * as Output_channel_lib from '../lib/utils/output_channel';
-import * as utils from '../lib/utils/utils';
+import * as Output_channel_lib from '../utils/output_channel';
+import * as utils from '../utils/utils';
 import * as teroshdl2 from 'teroshdl2';
 import { Multi_project_manager } from 'teroshdl2/out/project_manager/multi_project_manager';
 

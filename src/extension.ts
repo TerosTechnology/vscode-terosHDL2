@@ -21,15 +21,12 @@
 
 import * as vscode from 'vscode';
 // Common libraries
-import * as config_reader_lib from "./lib/utils/config_reader";
-//Project manager
-import * as project_manager_lib from "./lib/project_manager/project_manager";
-let project_manager;
+import * as config_reader_lib from "./utils/config_reader";
 //Extension manager
-import * as extension_manager from "./lib/utils/extension_manager";
-import * as release_notes_webview from "./lib/utils/webview/release_notes";
+import * as extension_manager from "./utils/extension_manager";
+import * as release_notes_webview from "./utils/webview/release_notes";
 //Utils
-import * as Output_channel_lib from './lib/utils/output_channel';
+import * as Output_channel_lib from './utils/output_channel';
 
 
 // TerosHDL
@@ -57,20 +54,6 @@ export async function activate(context: vscode.ExtensionContext) {
 
 
 
-
-
-
-    /**************************************************************************/
-    // Config
-    /**************************************************************************/
-    config_reader = new config_reader_lib.Config_reader(context, output_channel);
-
-
-
-    /**************************************************************************/
-    // Project manager
-    /**************************************************************************/
-    project_manager = new project_manager_lib.Project_manager(context, output_channel, config_reader);
 
 
 

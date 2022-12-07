@@ -26,8 +26,8 @@ import { Logger } from "./ctags/Logger";
 
 import * as vscode from 'vscode';
 import { Multi_project_manager } from 'teroshdl2/out/project_manager/multi_project_manager';
-import * as Output_channel_lib from '../../lib/utils/output_channel';
-import * as utils from '../../lib/utils/utils';
+import * as Output_channel_lib from '../../utils/output_channel';
+import * as utils from '../../utils/utils';
 
 export class Language_provider_manager {
     private output_channel: Output_channel_lib.Output_channel;
