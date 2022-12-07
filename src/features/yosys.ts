@@ -1,4 +1,4 @@
-import * as Utils from '../lib/project_manager/utils';
+import * as Utils from "../utils/utils";
 
 export function get_yosys_read_file(sources, backend, working_directory) {
     let vhdl_files: string[] = [];
@@ -16,7 +16,7 @@ export function get_yosys_read_file(sources, backend, working_directory) {
             relative_path_file = filename;
         }
 
-        let lang = Utils.get_file_lang(relative_path_file);
+        let lang = get_file_lang(relative_path_file);
         if (lang === 'vhdl') {
             vhdl_files.push(relative_path_file);
         }
@@ -97,4 +97,14 @@ export function normalize_netlist(netlist) {
     catch (e) {
         return netlist;
     }
+}
+
+export function get_file_lang(filepath: string | undefined) {
+    if (filepath === undefined) {
+        return '';
+    }
+    const teroshdl = require('teroshdl');
+    const utils = teroshdl.Utils;
+    let lang = utils.get_file_lang(filepath);
+    return lang;
 }

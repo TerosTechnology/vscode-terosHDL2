@@ -23,7 +23,7 @@
 import * as vscode from 'vscode';
 import * as teroshdl2 from 'teroshdl2';
 import { Multi_project_manager } from 'teroshdl2/out/project_manager/multi_project_manager';
-import * as utils from '../lib/utils/utils';
+import * as utils from '../utils/utils';
 
 enum LINTER_MODE {
     STYLE = "style",

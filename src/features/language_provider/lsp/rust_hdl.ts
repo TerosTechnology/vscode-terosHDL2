@@ -11,7 +11,7 @@ import * as path from 'path';
 import semver = require('semver');
 import vscode = require('vscode');
 import { ExtensionContext, window } from 'vscode';
-import * as config_reader_lib from "../../../lib/utils/config_reader";
+import * as config_reader_lib from "../../../utils/config_reader";
 
 import {
     LanguageClient,

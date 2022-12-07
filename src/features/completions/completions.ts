@@ -1,7 +1,7 @@
 import { VhdlAttributeCompletionItemProvider} from './attributes';
 import { VhdlLibraryCompletionItemProvider} from './libraries';
 import { VhdlStdPackageCompletionItemProvider} from './std_packages';
-import * as Output_channel_lib from '../../lib/utils/output_channel';
+import * as Output_channel_lib from '../../utils/output_channel';
 
 import * as vscode from 'vscode';
 

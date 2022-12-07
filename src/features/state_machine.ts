@@ -24,8 +24,8 @@ import * as path_lib from 'path';
 import * as fs from 'fs';
 import * as teroshdl2 from 'teroshdl2';
 import { Multi_project_manager } from 'teroshdl2/out/project_manager/multi_project_manager';
-import * as Output_channel_lib from '../lib/utils/output_channel';
-import * as utils from '../lib/utils/utils';
+import * as Output_channel_lib from '../utils/output_channel';
+import * as utils from '../utils/utils';
 import {Base_webview} from './base_webview';
 
 // eslint-disable-next-line @typescript-eslint/class-name-casing

@@ -22,7 +22,7 @@ jobs:
       - name: Set version dev
         run: |
           now=`date +"%Y-%m-%d__%H:%M"`
-          echo "::set-env name=version::$now"
+          echo "version=$now" >> $GITHUB_ENV
 
       - name: Set version main
         if: github.ref == 'refs/heads/main'
@@ -33,19 +33,19 @@ jobs:
             | awk -F: '{ print $2 }' \
             | sed 's/[",]//g')
 
-          echo "::set-env name=version::$PACKAGE_VERSION"
+          echo "version=$PACKAGE_VERSION" >> $GITHUB_ENV
 
       - name: Set version dev
         if: github.ref == 'refs/heads/dev'
         run: |
           now=`date +"%Y-%m-%d__%H:%M"`
-          echo "::set-env name=version::$now"
+          echo "version=$now" >> $GITHUB_ENV
 
       - name: Set version pull request
         if: github.event == 'pull_request'
         run: |
           now=`date +"%Y-%m-%d__%H:%M"`
-          echo "::set-env name=version::$now"
+          echo "version=$now" >> $GITHUB_ENV
 
       - name: Prepare teroshdl-vscode
         run: |
@@ -53,7 +53,7 @@ jobs:
 
       - name: Prepare colibri2
         run: |
-          git clone https://github.com/TerosTechnology/colibri2.git -b dev_prj
+          git clone https://github.com/TerosTechnology/colibri2.git -b main
           cd colibri2
           npm install
           cp -R out ../node_modules/teroshdl2/
@@ -72,14 +72,16 @@ jobs:
           # cd node_modules/teroshdl2; npm install; cd ../../
           vsce package --allow-star-activation
           file=`ls *.vsix`
-          file_ver="{{ env.app_version }}_${file}"
+          echo ${{ env.version }}
+          file_ver="${{ env.version }}_${file}"
+          file_ver="${file_ver/:/"_"}"
           mv $file $file_ver
 
       - name: Archive vsix
         uses: actions/upload-artifact@v3
         with:
-          name: code-coverage-report
-          path: *.vsix
+          path: |
+            *.vsix
 
       - uses: "marvinpinto/action-automatic-releases@latest"
         if: github.ref == 'refs/heads/main'

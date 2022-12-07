@@ -21,9 +21,10 @@
 // along with Colibri.  If not, see <https://www.gnu.org/licenses/>.
 
 import * as vscode from 'vscode';
-import * as Output_channel_lib from '../lib/utils/output_channel';
+import * as Output_channel_lib from '../utils/output_channel';
 import * as teroshdl2 from 'teroshdl2';
 import { Multi_project_manager } from 'teroshdl2/out/project_manager/multi_project_manager';
+import * as utils from '../utils/utils';
 
 export class Config_manager {
 
@@ -80,22 +81,55 @@ export class Config_manager {
                         case 'close':
                             this.close_panel();
                             return;
+                        case 'export':
+                            this.export_config();
+                            return;
+                        case 'load':
+                            this.load_config_from_file();
+                            return;
                     }
                 },
                 undefined,
                 this.context.subscriptions
             );
             this.panel.webview.html = this.web_content;
-            await this.panel?.webview.postMessage({
-              command: "set_config",
-              config: this.manager.get_config_global_config()
-            });
+            await this.update_web_config();
         }
         else {
         }
         // await this.update(document);
     }
 
+    export_config(){
+        vscode.window.showSaveDialog().then(fileInfos => {
+            if (fileInfos?.path !== undefined) {
+                const path_norm = utils.normalize_path(fileInfos?.path);
+                const config = this.manager.get_config_global_config();
+                const config_string = JSON.stringify(config, null, 4);
+                teroshdl2.utils.file_utils.save_file_sync(path_norm, config_string);
+            }
+        });
+    }
+
+    async load_config_from_file(){
+        vscode.window.showOpenDialog({ canSelectMany: false }).then((value) => {
+            if (value === undefined) {
+                return;
+            }
+            const path_norm = utils.normalize_path(value[0].fsPath);
+            const file_content = teroshdl2.utils.file_utils.read_file_sync(path_norm);
+            const config = JSON.parse(file_content);
+            this.set_config(config);
+            this.update_web_config();
+        });
+    }
+
+    async update_web_config(){
+        await this.panel?.webview.postMessage({
+            command: "set_config",
+            config: this.manager.get_config_global_config()
+        });
+    }
 
     set_config(config: any){
         this.manager.set_global_config_from_json(config);
