@@ -1,0 +1,21 @@
+"languages": [
+{%- for language in language_list %}
+{
+    "id": "{{language["id"]}}",
+    "aliases": [
+        "VHDL",
+        "vhdl"
+    ],
+    "extensions": {{language["extensions"] | replace("'", '"')}},
+    "configuration": "{{language["configuration"]}}"
+},
+{%- endfor %}
+],
+"snippets": [
+{%- for language in language_list %}
+    {
+        "language": "{{language["id"]}}",
+        "path": "{{language["snippet"]}}"
+    }
+{%- endfor %}
+]

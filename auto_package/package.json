@@ -206,139 +206,137 @@
             }
         ],
         "languages": [
-            {
-                "id": "vhdl",
-                "aliases": [
-                    "VHDL",
-                    "vhdl"
-                ],
-                "extensions": [
-                    ".vhd",
-                    ".vho",
-                    ".vhdl",
-                    ".vhd"
-                ],
-                "configuration": "./configs/vhdl.configuration.json"
-            },
-            {
-                "id": "vcd",
-                "extensions": [
-                    ".vcd"
-                ]
-            },
-            {
-                "id": "gtkw_waveconfig",
-                "extensions": [
-                    ".gtkw"
-                ]
-            },
-            {
-                "id": "gtkw_wavebin",
-                "extensions": [
-                    ".fst",
-                    ".ghw"
-                ]
-            },
-            {
-                "id": "tcl",
-                "aliases": [
-                    "TCL",
-                    "tcl"
-                ],
-                "extensions": [
-                    ".tcl"
-                ],
-                "configuration": "./configs/tcl.configuration.json"
-            },
-            {
-                "id": "ucf",
-                "aliases": [
-                    "vivado ucf",
-                    "ucf constraints"
-                ],
-                "extensions": [
-                    ".ucf"
-                ],
-                "configuration": "./configs/ucfconstraints.configuration.json"
-            },
-            {
-                "id": "xdc",
-                "aliases": [
-                    "vivado xdc",
-                    "xdc constraints"
-                ],
-                "extensions": [
-                    ".xdc",
-                    ".sdc"
-                ],
-                "configuration": "./configs/xdcconstraints.configuration.json"
-            },
-            {
-                "id": "ldc",
-                "aliases": [
-                    "lattice constraints"
-                ],
-                "extensions": [
-                    ".ldc",
-                    ".pdc"
-                ],
-                "configuration": "./configs/xdcconstraints.configuration.json"
-            },
-            {
-                "id": "verilog",
-                "aliases": [
-                    "Verilog",
-                    "verilog"
-                ],
-                "extensions": [
-                    ".v",
-                    ".vh",
-                    ".vl"
-                ],
-                "configuration": "./configs/verilog.configuration.json"
-            },
-            {
-                "id": "systemverilog",
-                "aliases": [
-                    "System Verilog",
-                    "systemverilog"
-                ],
-                "extensions": [
-                    ".sv",
-                    ".svh",
-                    ".SV"
-                ],
-                "configuration": "./configs/systemverilog.configuration.json"
-            }
+        {
+            "id": "vhdl",
+            "aliases": [
+                "VHDL",
+                "vhdl"
+            ],
+            "extensions": [".vhd", ".vho", ".vhdl", ".vhd"],
+            "configuration": "./configs/vhdl.configuration.json"
+        },
+        {
+            "id": "verilog",
+            "aliases": [
+                "VHDL",
+                "vhdl"
+            ],
+            "extensions": [".v", ".vh", ".vl"],
+            "configuration": "./configs/verilog.configuration.json"
+        },
+        {
+            "id": "systemverilog",
+            "aliases": [
+                "VHDL",
+                "vhdl"
+            ],
+            "extensions": [".sv", ".svh", ".SV"],
+            "configuration": "./configs/systemverilog.configuration.json"
+        },
+        {
+            "id": "vcd",
+            "aliases": [
+                "VHDL",
+                "vhdl"
+            ],
+            "extensions": [".vcd"],
+            "configuration": ""
+        },
+        {
+            "id": "gtkw_waveconfig",
+            "aliases": [
+                "VHDL",
+                "vhdl"
+            ],
+            "extensions": [".gtkw"],
+            "configuration": ""
+        },
+        {
+            "id": "gtkw_wavebin",
+            "aliases": [
+                "VHDL",
+                "vhdl"
+            ],
+            "extensions": [".fst", ".ghw"],
+            "configuration": ""
+        },
+        {
+            "id": "tcl",
+            "aliases": [
+                "VHDL",
+                "vhdl"
+            ],
+            "extensions": [".tcl", ".TCL"],
+            "configuration": "./configs/tcl.configuration.json"
+        },
+        {
+            "id": "ucf",
+            "aliases": [
+                "VHDL",
+                "vhdl"
+            ],
+            "extensions": [".ucf"],
+            "configuration": "./configs/ucfconstraints.configuration.json"
+        },
+        {
+            "id": "xdc",
+            "aliases": [
+                "VHDL",
+                "vhdl"
+            ],
+            "extensions": [".xdc", ".sdc"],
+            "configuration": "./configs/xdcconstraints.configuration.json"
+        },
+        {
+            "id": "ldc",
+            "aliases": [
+                "VHDL",
+                "vhdl"
+            ],
+            "extensions": [".ldc", ".pdc"],
+            "configuration": "./configs/xdcconstraints.configuration.json"
+        },
         ],
         "snippets": [
             {
                 "language": "vhdl",
-                "path": "./snippets/vhdl/vhdl.json"
-            },
+                "path": ""
+            }
             {
                 "language": "verilog",
-                "path": "./snippets/verilog/verilog.json"
-            },
+                "path": ""
+            }
             {
                 "language": "systemverilog",
-                "path": "./snippets/systemverilog/systemverilog.json"
-            },
+                "path": ""
+            }
             {
-                "language": "systemverilog",
-                "path": "./snippets/verilog/verilog.json"
-            },
+                "language": "vcd",
+                "path": ""
+            }
             {
-                "language": "xdc",
-                "path": "./snippets/xdc/xdc.json"
-            },
+                "language": "gtkw_waveconfig",
+                "path": ""
+            }
+            {
+                "language": "gtkw_wavebin",
+                "path": ""
+            }
             {
                 "language": "tcl",
-                "path": "./snippets/tcl/tcl.json"
-            },
+                "path": ""
+            }
+            {
+                "language": "ucf",
+                "path": ""
+            }
+            {
+                "language": "xdc",
+                "path": ""
+            }
             {
                 "language": "ldc",
-                "path": "./snippets/xdc/xdc.json"
+                "path": ""
             }
         ],
 

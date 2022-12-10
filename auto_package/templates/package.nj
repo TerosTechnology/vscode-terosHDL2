@@ -37,8 +37,7 @@
 {% include 'grammar.nj' %},
 {% include 'menu.nj' %},
 {% include 'command.nj' %},
-{% include 'language.nj' %},
-{% include 'snippet.nj' %},
+{% include 'language_and_snippet.nj' %},
 {% endfilter %}
         "keybindings": [
             {

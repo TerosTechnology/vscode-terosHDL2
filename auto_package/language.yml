@@ -1,0 +1,42 @@
+- id: "vhdl"
+  extensions: [".vhd", ".vho", ".vhdl", ".vhd"]
+  configuration: "./configs/vhdl.configuration.json"
+  snippets: "./snippets/vhdl/vhdl.json"
+
+- id: "verilog"
+  extensions: [".v", ".vh", ".vl"]
+  configuration: "./configs/verilog.configuration.json"
+  snippets: "./snippets/verilog/verilog.json"
+
+- id: "systemverilog"
+  extensions: [".sv", ".svh", ".SV"]
+  configuration: "./configs/systemverilog.configuration.json"
+  snippets: "./snippets/verilog/verilog.json"
+
+- id: "vcd"
+  extensions: [".vcd"]
+
+- id: "gtkw_waveconfig"
+  extensions: [".gtkw"]
+
+- id: "gtkw_wavebin"
+  extensions: [".fst", ".ghw"]
+
+- id: "tcl"
+  extensions: [".tcl", ".TCL"]
+  configuration: "./configs/tcl.configuration.json"
+  snippets: "./snippets/tcl/tcl.json"
+
+- id: "ucf"
+  extensions: [".ucf"]
+  configuration: "./configs/ucfconstraints.configuration.json"
+
+- id: "xdc"
+  extensions: [".xdc", ".sdc"]
+  configuration: "./configs/xdcconstraints.configuration.json"
+  snippets: "./snippets/xdc/xdc.json"
+
+- id: "ldc"
+  extensions: [".ldc", ".pdc"]
+  configuration: "./configs/xdcconstraints.configuration.json"
+  snippets: "./snippets/xdc/xdc.json"

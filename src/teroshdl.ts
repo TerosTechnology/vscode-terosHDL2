@@ -33,7 +33,7 @@ import { Completions_manager } from "./features/completions/completions";
 import { Number_hover_manager } from "./features/number_hover";
 import { Shutter_mode_manager } from "./features/shutter_mode";
 import { Config_manager } from "./features/config";
-import { Project_manager } from "./features/project/project_manager";
+import { Tree_view_manager } from "./features/tree_views/manager";
 import * as teroshdl2 from 'teroshdl2';
 
 const CONFIG_FILENAME = '.teroshdl2_config.json';
@@ -62,7 +62,7 @@ export class Teroshdl {
         this.init_number_hover();
         this.init_shutter_mode();
         this.init_config();
-        this.init_project();
+        this.init_tree_views();
     }
 
     private init_template_manager() {
@@ -105,8 +105,8 @@ export class Teroshdl {
         new Config_manager(this.context, this.output_channel, this.manager);
     }
 
-    private init_project() {
-        new Project_manager(this.context);
+    private init_tree_views() {
+        new Tree_view_manager(this.context);
     }
 
 }
