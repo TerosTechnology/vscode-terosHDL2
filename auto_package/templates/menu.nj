@@ -1,0 +1,48 @@
+"menus": {
+    "explorer/context": [
+    ],
+    "view/title": [
+{% set ns = namespace(counter = 0) %}
+{%- for command in command_list %}
+        {%- if "where" in command %}
+            {%- for command_where in command["where"] %}
+                {%- if command_where == "view/title"%}
+                    {%- if ns.counter == 0 %}
+        {
+                    {%- else %}
+        ,{
+                    {%- endif %}
+            "when": "resourceLangId == vhdl || resourceLangId == verilog || resourceLangId == systemverilog",
+            "command": "teroshdl.{{ command["name"] }}",
+            "group": "navigation"
+        }
+                {% set ns.counter = ns.counter + 1 %}
+                {%- endif %}
+            {%- endfor %}
+        {%- endif %}
+{%- endfor %}
+    ],
+    "view/item/context": [
+    ],
+    "editor/title": [
+{% set ns = namespace(counter = 0) %}
+{%- for command in command_list %}
+        {%- if "where" in command %}
+            {%- for command_where in command["where"] %}
+                {%- if command_where == "editor/title"%}
+                    {%- if ns.counter == 0 %}
+        {
+                    {%- else %}
+        ,{
+                    {%- endif %}
+            "when": "resourceLangId == vhdl || resourceLangId == verilog || resourceLangId == systemverilog",
+            "command": "teroshdl.{{ command["name"] }}",
+            "group": "navigation"
+        }
+                {% set ns.counter = ns.counter + 1 %}
+                {%- endif %}
+            {%- endfor %}
+        {%- endif %}
+{%- endfor %}
+    ]
+}

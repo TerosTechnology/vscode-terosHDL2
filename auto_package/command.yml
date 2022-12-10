@@ -1,0 +1,44 @@
+################################################################################
+# Others
+################################################################################
+
+- name: go_to_parent
+  title: Go to parent file
+
+################################################################################
+# Project manager
+################################################################################
+
+- name: project.configuration
+  title: "TerosHDL: Open configuration menu"
+  icon: settings-gear
+  where: ["view/title"]
+
+################################################################################
+# Editor
+################################################################################
+
+- name: state_machine.viewer
+  title: State machine viewe
+  icon: state-machine
+  where: ["editor/title"]
+
+- name: netlist.viewer
+  title: Netlist viewer
+  icon: list-tree
+  where: ["editor/title"]
+
+- name: format
+  title: Format
+  icon: check
+  where: ["editor/title"]
+
+- name: documentation.module
+  title: Module documentation preview
+  icon: book
+  where: ["editor/title"]
+
+- name: generate_template
+  title: "TerosHDL: Generate template"
+  icon: file-code
+  where: ["editor/title"]
