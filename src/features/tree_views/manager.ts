@@ -17,15 +17,23 @@
 // You should have received a copy of the GNU General Public License
 // along with teroshdl. If not, see <https://www.gnu.org/licenses/>.
 
+import {Project_manager} from "./project/manager";
 import {Source_manager} from "./source/manager";
+
 import * as vscode from "vscode";
+import { Multi_project_manager } from 'teroshdl2/out/project_manager/multi_project_manager';
 
 export class Tree_view_manager{
+    private project_manager : Project_manager;
     private source_manager : Source_manager;
 
-    constructor(context: vscode.ExtensionContext){
-        this.source_manager = new Source_manager(context);
+    constructor(context: vscode.ExtensionContext, manager: Multi_project_manager){
+        this.project_manager = new Project_manager(context, manager);
+        this.source_manager = new Source_manager(context, manager);
     }
+
+    
+
 
 
 }

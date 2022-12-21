@@ -21,6 +21,6 @@ with open(template_path, encoding="UTF-8") as file:
         .render(command_list=command_list, language_list=language_list)
     )
 
-output_path = os.path.join(os.path.dirname(__file__), "package.json")
+output_path = os.path.join(os.path.dirname(__file__), "..", "package.json")
 with open(output_path, mode="w", encoding="UTF-8") as file:
     file.write(template)

@@ -9,17 +9,35 @@
 # Project manager
 ################################################################################
 
-- name: project.configuration
-  title: "TerosHDL: Open configuration menu"
+- name: view.project.configuration
+  title: "Open configuration menu"
   icon: settings-gear
   where: ["view/title"]
+  when: "view == teroshdl-project"
+
+- name: view.project.add
+  title: "Add project"
+  icon: add
+  where: ["view/title"]
+  when: "view == teroshdl-project"
+
+- name: view.project.delete
+  title: "Delete project"
+  icon: chrome-close
+  where: ["view/item/context"]
+  when: "viewItem == project"
+  group: "inline"
 
 ################################################################################
 # Editor
 ################################################################################
+- name: generate_template
+  title: "TerosHDL: Generate template"
+  icon: file-code
+  where: ["editor/title"]
 
 - name: state_machine.viewer
-  title: State machine viewe
+  title: State machine viewer
   icon: state-machine
   where: ["editor/title"]
 
@@ -38,7 +56,3 @@
   icon: book
   where: ["editor/title"]
 
-- name: generate_template
-  title: "TerosHDL: Generate template"
-  icon: file-code
-  where: ["editor/title"]

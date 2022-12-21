@@ -12,7 +12,13 @@
                     {%- else %}
         ,{
                     {%- endif %}
-            "when": "resourceLangId == vhdl || resourceLangId == verilog || resourceLangId == systemverilog",
+
+                    {%- if "when" in command %}
+            "when": "{{ command["when"] }}",
+                    {%- else %}
+            "when": "resourceLangId == verilog || resourceLangId == systemverilog || resourceLangId == vhdl",
+                    {%- endif %}
+
             "command": "teroshdl.{{ command["name"] }}",
             "group": "navigation"
         }
@@ -23,6 +29,25 @@
 {%- endfor %}
     ],
     "view/item/context": [
+    {% set ns = namespace(counter = 0) %}
+    {%- for command in command_list %}
+            {%- if "where" in command %}
+                {%- for command_where in command["where"] %}
+                    {%- if command_where == "view/item/context"%}
+                        {%- if ns.counter == 0 %}
+            {
+                        {%- else %}
+            ,{
+                        {%- endif %}
+                "when": "{{ command["when"] }}",
+                "command": "teroshdl.{{ command["name"] }}",
+                "group": "{{ command["group"] }}"
+            }
+                    {% set ns.counter = ns.counter + 1 %}
+                    {%- endif %}
+                {%- endfor %}
+            {%- endif %}
+    {%- endfor %}
     ],
     "editor/title": [
 {% set ns = namespace(counter = 0) %}
@@ -35,7 +60,7 @@
                     {%- else %}
         ,{
                     {%- endif %}
-            "when": "resourceLangId == vhdl || resourceLangId == verilog || resourceLangId == systemverilog",
+            "when": "resourceLangId == verilog || resourceLangId == systemverilog || resourceLangId == vhdl",
             "command": "teroshdl.{{ command["name"] }}",
             "group": "navigation"
         }

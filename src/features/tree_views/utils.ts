@@ -18,7 +18,7 @@
 
 import * as path_lib from "path";
 
-const BASE_PATH_ICON = path_lib.join(__filename, "..", "..", "..", "resources");
+const BASE_PATH_ICON = path_lib.join(__filename, "..", "..", "..", "..", "resources");
 
 export function get_icon(name: string){
     const icon_path = {

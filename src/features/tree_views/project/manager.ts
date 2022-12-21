@@ -21,7 +21,7 @@ import * as vscode from "vscode";
 import * as element from "./element";
 import { Multi_project_manager } from 'teroshdl2/out/project_manager/multi_project_manager';
 
-export class Source_manager {
+export class Project_manager {
     private tree : element.ProjectProvider;
     private project_manager : Multi_project_manager;
     private project_emitter = new vscode.EventEmitter<element.Project[] | undefined>();

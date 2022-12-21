@@ -106,56 +106,47 @@
             "explorer/context": [
             ],
             "view/title": [
-
                 {
                     "when": "view == teroshdl-project",
-
                     "command": "teroshdl.project.configuration",
                     "group": "navigation"
                 }
-                        
             ],
             "view/item/context": [
             ],
             "editor/title": [
-
                 {
                     "when": "resourceLangId == verilog || resourceLangId == systemverilog || resourceLangId == vhdl",
                     "command": "teroshdl.generate_template",
                     "group": "navigation"
-                }
-                        
-                ,{
+                },
+                {
                     "when": "resourceLangId == verilog || resourceLangId == systemverilog || resourceLangId == vhdl",
                     "command": "teroshdl.state_machine.viewer",
                     "group": "navigation"
-                }
-                        
-                ,{
+                },
+                {
                     "when": "resourceLangId == verilog || resourceLangId == systemverilog || resourceLangId == vhdl",
                     "command": "teroshdl.netlist.viewer",
                     "group": "navigation"
-                }
-                        
-                ,{
+                },
+                {
                     "when": "resourceLangId == verilog || resourceLangId == systemverilog || resourceLangId == vhdl",
                     "command": "teroshdl.format",
                     "group": "navigation"
-                }
-                        
-                ,{
+                },
+                {
                     "when": "resourceLangId == verilog || resourceLangId == systemverilog || resourceLangId == vhdl",
                     "command": "teroshdl.documentation.module",
                     "group": "navigation"
                 }
-                        
             ]
         },
         "commands": [
             {
                 "command": "teroshdl.go_to_parent",
                 "title": "Go to parent file"
-            }, 
+            },
             {
                 "command": "teroshdl.project.configuration",
                 "icon": {
@@ -163,7 +154,7 @@
                     "dark": "resources/dark/settings-gear.svg"
                 },
                 "title": "TerosHDL: Open configuration menu"
-            }, 
+            },
             {
                 "command": "teroshdl.generate_template",
                 "icon": {
@@ -171,7 +162,7 @@
                     "dark": "resources/dark/file-code.svg"
                 },
                 "title": "TerosHDL: Generate template"
-            }, 
+            },
             {
                 "command": "teroshdl.state_machine.viewer",
                 "icon": {
@@ -179,7 +170,7 @@
                     "dark": "resources/dark/state-machine.svg"
                 },
                 "title": "State machine viewer"
-            }, 
+            },
             {
                 "command": "teroshdl.netlist.viewer",
                 "icon": {
@@ -187,7 +178,7 @@
                     "dark": "resources/dark/list-tree.svg"
                 },
                 "title": "Netlist viewer"
-            }, 
+            },
             {
                 "command": "teroshdl.format",
                 "icon": {
@@ -195,7 +186,7 @@
                     "dark": "resources/dark/check.svg"
                 },
                 "title": "Format"
-            }, 
+            },
             {
                 "command": "teroshdl.documentation.module",
                 "icon": {
@@ -206,71 +197,105 @@
             }
         ],
         "languages": [
-
-        {
-            "id": "vhdl",
-            "aliases": ["VHDL", "vhdl"],
-            "configuration": "./configs/vhdl.configuration.json",
-            "extensions": [".vhd", ".vho", ".vhdl", ".vhd"]
-        }
-
-        ,{
-            "id": "verilog",
-            "aliases": ["Verilog", "verilog"],
-            "configuration": "./configs/verilog.configuration.json",
-            "extensions": [".v", ".vh", ".vl"]
-        }
-
-        ,{
-            "id": "systemverilog",
-            "aliases": ["System Verilog", "systemverilog"],
-            "configuration": "./configs/systemverilog.configuration.json",
-            "extensions": [".sv", ".svh", ".SV"]
-        }
-
-        ,{
-            "id": "vcd",
-            "extensions": [".vcd"]
-        }
-
-        ,{
-            "id": "gtkw_waveconfig",
-            "extensions": [".gtkw"]
-        }
-
-        ,{
-            "id": "gtkw_wavebin",
-            "extensions": [".fst", ".ghw"]
-        }
-
-        ,{
-            "id": "tcl",
-            "aliases": ["TCL", "tcl"],
-            "configuration": "./configs/tcl.configuration.json",
-            "extensions": [".tcl"]
-        }
-
-        ,{
-            "id": "ucf",
-            "aliases": ["vivado ucf", "ucf constraints"],
-            "configuration": "./configs/ucfconstraints.configuration.json",
-            "extensions": [".ucf"]
-        }
-
-        ,{
-            "id": "xdc",
-            "aliases": ["vivado xdc", "xdc constraints"],
-            "configuration": "./configs/xdcconstraints.configuration.json",
-            "extensions": [".xdc", ".sdc"]
-        }
-
-        ,{
-            "id": "ldc",
-            "aliases": ["lattice constraints"],
-            "configuration": "./configs/xdcconstraints.configuration.json",
-            "extensions": [".ldc", ".pdc"]
-        }
-
+            {
+                "id": "vhdl",
+                "aliases": [
+                    "VHDL",
+                    "vhdl"
+                ],
+                "configuration": "./configs/vhdl.configuration.json",
+                "extensions": [".vhd",".vho",".vhdl",".vhd"]
+            },
+            {
+                "id": "verilog",
+                "aliases": [
+                    "Verilog",
+                    "verilog"
+                ],
+                "configuration": "./configs/verilog.configuration.json",
+                "extensions": [
+                    ".v",
+                    ".vh",
+                    ".vl"
+                ]
+            },
+            {
+                "id": "systemverilog",
+                "aliases": [
+                    "System Verilog",
+                    "systemverilog"
+                ],
+                "configuration": "./configs/systemverilog.configuration.json",
+                "extensions": [
+                    ".sv",
+                    ".svh",
+                    ".SV"
+                ]
+            },
+            {
+                "id": "vcd",
+                "extensions": [
+                    ".vcd"
+                ]
+            },
+            {
+                "id": "gtkw_waveconfig",
+                "extensions": [
+                    ".gtkw"
+                ]
+            },
+            {
+                "id": "gtkw_wavebin",
+                "extensions": [
+                    ".fst",
+                    ".ghw"
+                ]
+            },
+            {
+                "id": "tcl",
+                "aliases": [
+                    "TCL",
+                    "tcl"
+                ],
+                "configuration": "./configs/tcl.configuration.json",
+                "extensions": [
+                    ".tcl"
+                ]
+            },
+            {
+                "id": "ucf",
+                "aliases": [
+                    "vivado ucf",
+                    "ucf constraints"
+                ],
+                "configuration": "./configs/ucfconstraints.configuration.json",
+                "extensions": [
+                    ".ucf"
+                ]
+            },
+            {
+                "id": "xdc",
+                "aliases": [
+                    "vivado xdc",
+                    "xdc constraints"
+                ],
+                "configuration": "./configs/xdcconstraints.configuration.json",
+                "extensions": [
+                    ".xdc",
+                    ".sdc"
+                ]
+            },
+            {
+                "id": "ldc",
+                "aliases": [
+                    "lattice constraints"
+                ],
+                "configuration": "./configs/xdcconstraints.configuration.json",
+                "extensions": [
+                    ".ldc",
+                    ".pdc"
+                ]
+            }
         ],
         "snippets": [
             {
@@ -286,6 +311,10 @@
                 "path": "./snippets/systemverilog/systemverilog.json"
             },
             {
+                "language": "systemverilog",
+                "path": "./snippets/verilog/verilog.json"
+            },
+            {
                 "language": "tcl",
                 "path": "./snippets/tcl/tcl.json"
             },
@@ -296,13 +325,8 @@
             {
                 "language": "ldc",
                 "path": "./snippets/xdc/xdc.json"
-            },
-            {
-                "language": "systemverilog",
-                "path": "./snippets/verilog/verilog.json"
             }
         ],
-
         "keybindings": [
             {
                 "command": "teroshdl.go_to_parent",
@@ -312,7 +336,6 @@
             }
         ]
     },
-
     "scripts": {
         "clean": "shx rm -rf out",
         "vscode:prepublish": "npm run build-prepare & npm run build:syntax & npm run compile",
@@ -361,5 +384,4 @@
         "vscode-test": "^1.3.0",
         "shx": "^0.3.3"
     }
-
 }

@@ -106,7 +106,7 @@ export class Teroshdl {
     }
 
     private init_tree_views() {
-        new Tree_view_manager(this.context);
+        new Tree_view_manager(this.context, this.manager);
     }
 
 }
