@@ -93,7 +93,7 @@ export class Project_manager {
     }
     
     select_project(item: element.Project){
-        this.project_manager.select_project(item.get_project_name());
+        this.project_manager.select_project_current(item.get_project_name());
         this.refresh();
     }
 

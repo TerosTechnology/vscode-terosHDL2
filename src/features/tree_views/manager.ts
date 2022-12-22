@@ -35,6 +35,8 @@ export class Tree_view_manager{
 
         project_manager = new Project_manager(context, manager, this.emitter);
         source_manager = new Source_manager(context, manager, this.emitter);
+
+        this.refresh();
     }
 
     refresh(){
