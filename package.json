@@ -69,6 +69,10 @@
                 {
                     "id": "teroshdl-view-runs",
                     "name": "Runs manager"
+                },
+                {
+                    "id": "teroshdl-view-result",
+                    "name": "Results"
                 }
             ]
         },

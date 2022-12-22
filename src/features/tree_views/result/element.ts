@@ -19,40 +19,42 @@
 import { Multi_project_manager } from "teroshdl2/out/project_manager/multi_project_manager";
 import * as vscode from "vscode";
 import {get_icon} from "../utils";
+import * as teroshdl2 from 'teroshdl2';
+import {Run_output_manager} from "../run_output";
 
 
-export const VIEW_ID = "teroshdl-project";
+export const VIEW_ID = "teroshdl-view-result";
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Elements
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-export class Project extends vscode.TreeItem {
+export class Result extends vscode.TreeItem {
     public children: any[] | undefined;
-    public iconPath = get_icon("folder");
-    public contextValue = "project";
+    public contextValue = "result";
     // Element
-    private project_name: string;
+    private name: string;
+    private successful: boolean;
 
-    constructor(project_name: string, label: string, children?: any[]) {
+    constructor(name: string, successful: boolean, children?: any[]) {
         super(
-            label,
+            name,
             children === undefined ? vscode.TreeItemCollapsibleState.None : vscode.TreeItemCollapsibleState.Expanded
         );
         // Common
         this.children = children;
         // Element
-        this.project_name = project_name;
-        this.tooltip = "";
-        // Command
-        this.command = {
-            command: "teroshdl.view.project.select",
-            title: "Select project",
-            arguments: [this],
-        };
+        this.name = name;
+        this.successful = successful;
+        if (successful === true){
+            this.iconPath = get_icon("passed");
+        }
+        else{
+            this.iconPath = get_icon("failed");
+        }
     }
 
-    public get_project_name() : string{
-        return this.project_name;
+    get_name(){
+        return this.name;
     }
 }
 
@@ -74,11 +76,11 @@ export class ProjectProvider extends BaseTreeDataProvider<TreeItem> {
     readonly onDidChangeTreeData: vscode.Event<void> = this._onDidChangeTreeData.event;
 
     data: TreeItem[] = [];
-    private project_manager : Multi_project_manager;
+    private run_output_manager : Run_output_manager;
 
-    constructor(project_manager : Multi_project_manager) {
+    constructor(run_output_manager : Run_output_manager) {
         super();
-        this.project_manager = project_manager;
+        this.run_output_manager = run_output_manager;
     }
 
     getTreeItem(element: TreeItem): vscode.TreeItem | Thenable<vscode.TreeItem> {
@@ -96,24 +98,15 @@ export class ProjectProvider extends BaseTreeDataProvider<TreeItem> {
         return VIEW_ID;
     }
 
-    refresh(): void {
-        const prj_view : Project[]= [];
+    async refresh(): Promise<void> {
+        const result_view : Result[]= [];
 
-        const project_list = this.project_manager.get_projects();
-        const selected_project = this.project_manager.get_select_project();
-        let selected_project_name = '';
-        if (selected_project.successful === true){
-            selected_project_name = selected_project.result.name;
-        }
-        project_list.forEach(prj => {
-            const prj_name = prj.get_name();
-            let label = prj.get_name();
-            if (selected_project_name === prj_name){
-                label = `${prj_name} (current)`;
-            }
-            prj_view.push(new Project(prj.get_name(), label));
+        const result_list = this.run_output_manager.get_results();
+        result_list.forEach(result => {
+            result_view.push(new Result(result.name, result.successful));
         });
-        this.data = prj_view;
+
+        this.data = result_view;
         this._onDidChangeTreeData.fire();
     }
 }

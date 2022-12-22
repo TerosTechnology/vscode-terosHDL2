@@ -22,23 +22,26 @@ import * as element from "./element";
 import { Multi_project_manager } from 'teroshdl2/out/project_manager/multi_project_manager';
 import * as events from "events";
 import * as teroshdl2 from 'teroshdl2';
-import {Results_manager} from "../results";
+import {Run_output_manager} from "../run_output";
+import {Logger} from "../logger";
 
 export class Runs_manager {
     private tree : element.ProjectProvider;
     private project_manager : Multi_project_manager;
     private emitter : events.EventEmitter;
-    private results_manager : Results_manager;
+    private run_output_manager : Run_output_manager;
+    private logger : Logger;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     constructor(context: vscode.ExtensionContext, manager: Multi_project_manager, emitter : events.EventEmitter,
-        results_manager: Results_manager) {
+        run_output_manager: Run_output_manager, logger: Logger) {
 
         this.set_commands();
 
-        this.results_manager = results_manager;
+        this.logger = logger;
+        this.run_output_manager = run_output_manager;
         this.emitter = emitter;
         this.project_manager = manager;
         this.tree = new element.ProjectProvider(manager);
@@ -47,7 +50,7 @@ export class Runs_manager {
     }
 
     set_commands(){
-        vscode.commands.registerCommand("teroshdl.view.runs.run_all", (item) => this.run_all(item));
+        vscode.commands.registerCommand("teroshdl.view.runs.run_all", (item) => this.run(undefined));
         vscode.commands.registerCommand("teroshdl.view.runs.run", (item) => this.run(item));
     }
 
@@ -62,38 +65,53 @@ export class Runs_manager {
         }
     }
 
-    async run(item: element.Run){
+    async run(item: element.Run | undefined){
+        // Init output to empty
+        this.refresh([]);
+
         const prj_name = this.get_selected_project_name();
         if (prj_name === undefined){
             return;
         }
-        const test_list : teroshdl2.project_manager.tool_common.t_test_declaration = {
-            name: item.get_name(),
-            test_type: "",
-            filename: item.get_path(),
-            location: item.get_location()
-        };
-        const result = await this.project_manager.run(prj_name, this.project_manager.get_config_global_config(), [test_list], this.callback_run, this.callback_stream);
-        console.log();
+
+        let test_list : teroshdl2.project_manager.tool_common.t_test_declaration[] = [];
+        if (item === undefined){
+            test_list = await this.project_manager.get_test_list(prj_name, this.project_manager.get_config_global_config());
+        }
+        else{
+            const test : teroshdl2.project_manager.tool_common.t_test_declaration = {
+                name: item.get_name(),
+                test_type: "",
+                filename: item.get_path(),
+                location: item.get_location()
+            };
+            test_list = [test];
+        }
+
+        const selfm = this;
+        await this.project_manager.run(prj_name, this.project_manager.get_config_global_config(), test_list, 
+            (function(result: teroshdl2.project_manager.tool_common.t_test_result[]) { 
+                selfm.run_output_manager.set_results(result);
+                selfm.emitter.emit('refresh-result');
+            }),
+            (function(stream_c: any) { 
+                stream_c.stdout.on('data', function (data: any) {
+                    selfm.logger.log(data);
+                });
+                stream_c.stderr.on('data', function (data: any) {
+                    selfm.logger.log(data);
+                });
+            }),
+        );
     }
 
     callback_run(result: teroshdl2.project_manager.tool_common.t_test_result[]){
-        this.results_manager.set_results(result);
-    }
-    callback_stream(stream_c: any){
-        stream_c.stdout.on('data', function (data: any) {
-            console.log(data);
-        });
-        stream_c.stderr.on('data', function (data: any) {
-            console.log(data);
-        });
-    };
-
-    async run_all(item: element.Run){
+        this.refresh(result);
     }
 
-    refresh(){
-        this.emitter.emit('refresh');
+    refresh(result: teroshdl2.project_manager.tool_common.t_test_result[]){
+        this.run_output_manager.set_results(result);
+        this.emitter.emit('refresh-result');
     }
 
     refresh_tree(){

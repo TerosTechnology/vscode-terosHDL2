@@ -18,14 +18,23 @@
 // along with teroshdl. If not, see <https://www.gnu.org/licenses/>.
 import * as teroshdl2 from "teroshdl2";
 
-export class Results_manager{
+export class Run_output_manager{
     private res : teroshdl2.project_manager.tool_common.t_test_result[] = [];
+    private arct : teroshdl2.project_manager.tool_common.e_artifact_type[] = [];
 
     public set_results(res : teroshdl2.project_manager.tool_common.t_test_result[]){
         this.res = res;
     }
 
-    public get_results(){
+    public get_results() : teroshdl2.project_manager.tool_common.t_test_result[] {
         return this.res;
+    }
+
+    public set_artifacts(res : teroshdl2.project_manager.tool_common.e_artifact_type[]){
+        this.arct = res;
+    }
+
+    public get_artifacts() : teroshdl2.project_manager.tool_common.e_artifact_type[]{
+        return this.arct;
     }
 }
