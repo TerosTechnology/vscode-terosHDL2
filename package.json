@@ -61,6 +61,10 @@
                 {
                     "id": "teroshdl-project",
                     "name": "Project manager"
+                },
+                {
+                    "id": "teroshdl-view-source",
+                    "name": "Source manager"
                 }
             ]
         },
@@ -121,12 +125,37 @@
                     "group": "navigation"
                 }
                         
+                ,{
+                    "when": "view == teroshdl-view-source",
+
+                    "command": "teroshdl.view.source.add",
+                    "group": "navigation"
+                }
+                        
             ],
             "view/item/context": [
             
                     {
                         "when": "viewItem == project",
                         "command": "teroshdl.view.project.delete",
+                        "group": "inline"
+                    }
+                            
+                    ,{
+                        "when": "viewItem == library",
+                        "command": "teroshdl.view.source.add_source_to_library",
+                        "group": "inline"
+                    }
+                            
+                    ,{
+                        "when": "viewItem == library",
+                        "command": "teroshdl.view.source.delete_library",
+                        "group": "inline"
+                    }
+                            
+                    ,{
+                        "when": "viewItem == source",
+                        "command": "teroshdl.view.source.delete_source",
                         "group": "inline"
                     }
                             
@@ -193,6 +222,38 @@
                     "dark": "resources/dark/chrome-close.svg"
                 },
                 "title": "Delete project"
+            }, 
+            {
+                "command": "teroshdl.view.source.add",
+                "icon": {
+                    "light": "resources/light/add.svg",
+                    "dark": "resources/dark/add.svg"
+                },
+                "title": "Add"
+            }, 
+            {
+                "command": "teroshdl.view.source.add_source_to_library",
+                "icon": {
+                    "light": "resources/light/add.svg",
+                    "dark": "resources/dark/add.svg"
+                },
+                "title": "Add to library"
+            }, 
+            {
+                "command": "teroshdl.view.source.delete_library",
+                "icon": {
+                    "light": "resources/light/dash.svg",
+                    "dark": "resources/dark/dash.svg"
+                },
+                "title": "Delete library"
+            }, 
+            {
+                "command": "teroshdl.view.source.delete_source",
+                "icon": {
+                    "light": "resources/light/dash.svg",
+                    "dark": "resources/dark/dash.svg"
+                },
+                "title": "Delete source"
             }, 
             {
                 "command": "teroshdl.generate_template",

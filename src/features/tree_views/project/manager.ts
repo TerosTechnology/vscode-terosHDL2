@@ -24,14 +24,15 @@ import { Multi_project_manager } from 'teroshdl2/out/project_manager/multi_proje
 export class Project_manager {
     private tree : element.ProjectProvider;
     private project_manager : Multi_project_manager;
-    private project_emitter = new vscode.EventEmitter<element.Project[] | undefined>();
+    private refresh_func: (void);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    constructor(context: vscode.ExtensionContext, manager: Multi_project_manager) {
+    constructor(context: vscode.ExtensionContext, manager: Multi_project_manager, refresh_func:(void)) {
         this.set_commands();
 
+        this.refresh_func = refresh_func;
         this.project_manager = manager;
         this.tree = new element.ProjectProvider(manager);
         
@@ -75,7 +76,7 @@ export class Project_manager {
                 .then((project_name) => {
                     if (project_name !== undefined) {
                         this.project_manager.create_project(project_name);
-                        this.tree.refresh();
+                        this.refresh();
                     }
                 });
         }
@@ -89,16 +90,21 @@ export class Project_manager {
         else if(picker_value === PROJECT_ADD_TYPES[3]){
         }
     }
+    
     select_project(item: element.Project){
         this.project_manager.select_project(item.get_project_name());
-        this.tree.refresh();
+        this.refresh();
     }
 
     delete_project(item: element.Project){
         this.project_manager.delete_project(item.get_project_name());
-        this.tree.refresh();
+        this.refresh();
     }
 
     rename_project(item: element.Project){}
+
+    refresh(){
+        this.tree.refresh();
+    }
 }
 

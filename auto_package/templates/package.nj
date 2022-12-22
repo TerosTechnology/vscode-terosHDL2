@@ -30,6 +30,10 @@
                 {
                     "id": "teroshdl-project",
                     "name": "Project manager"
+                },
+                {
+                    "id": "teroshdl-view-source",
+                    "name": "Source manager"
                 }
             ]
         },

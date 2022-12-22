@@ -28,12 +28,12 @@ export class Tree_view_manager{
     private source_manager : Source_manager;
 
     constructor(context: vscode.ExtensionContext, manager: Multi_project_manager){
-        this.project_manager = new Project_manager(context, manager);
-        this.source_manager = new Source_manager(context, manager);
+        this.project_manager = new Project_manager(context, manager, this.refresh);
+        this.source_manager = new Source_manager(context, manager, this.refresh);
     }
 
-    
-
-
-
+    refresh(){
+        this.project_manager.refresh();
+        this.source_manager.refresh();
+    }
 }

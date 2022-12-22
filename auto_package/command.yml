@@ -9,6 +9,7 @@
 # Project manager
 ################################################################################
 
+## Project
 - name: view.project.configuration
   title: "Open configuration menu"
   icon: settings-gear
@@ -26,6 +27,34 @@
   icon: chrome-close
   where: ["view/item/context"]
   when: "viewItem == project"
+  group: "inline"
+
+## Source
+- name: view.source.add
+  title: "Add"
+  icon: add
+  where: ["view/title"]
+  when: "view == teroshdl-view-source"
+
+- name: view.source.add_source_to_library
+  title: "Add to library"
+  icon: add
+  where: ["view/item/context"]
+  when: "viewItem == library"
+  group: "inline"
+
+- name: view.source.delete_library
+  title: "Delete library"
+  icon: dash
+  where: ["view/item/context"]
+  when: "viewItem == library"
+  group: "inline"
+
+- name: view.source.delete_source
+  title: "Delete source"
+  icon: dash
+  where: ["view/item/context"]
+  when: "viewItem == source"
   group: "inline"
 
 ################################################################################
