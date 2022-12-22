@@ -34,6 +34,10 @@
                 {
                     "id": "teroshdl-view-source",
                     "name": "Source manager"
+                },
+                {
+                    "id": "teroshdl-view-runs",
+                    "name": "Runs manager"
                 }
             ]
         },

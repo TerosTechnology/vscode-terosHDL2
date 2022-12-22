@@ -19,6 +19,9 @@
 
 import {Project_manager} from "./project/manager";
 import {Source_manager} from "./source/manager";
+import {Runs_manager} from "./runs/manager";
+import {Results_manager} from "./results";
+
 import * as events from "events";
 
 import * as vscode from "vscode";
@@ -26,6 +29,8 @@ import { Multi_project_manager } from 'teroshdl2/out/project_manager/multi_proje
 
 let project_manager : Project_manager;
 let source_manager : Source_manager;
+let runs_manager : Runs_manager;
+let results : Results_manager = new Results_manager();
 
 export class Tree_view_manager{
     private emitter : events.EventEmitter = new events.EventEmitter();
@@ -35,6 +40,7 @@ export class Tree_view_manager{
 
         project_manager = new Project_manager(context, manager, this.emitter);
         source_manager = new Source_manager(context, manager, this.emitter);
+        runs_manager = new Runs_manager(context, manager, this.emitter, results);
 
         this.refresh();
     }
@@ -42,5 +48,7 @@ export class Tree_view_manager{
     refresh(){
         source_manager.refresh_tree();
         project_manager.refresh_tree();
+        runs_manager.refresh_tree();
     }
 }
+

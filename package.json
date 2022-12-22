@@ -65,6 +65,10 @@
                 {
                     "id": "teroshdl-view-source",
                     "name": "Source manager"
+                },
+                {
+                    "id": "teroshdl-view-runs",
+                    "name": "Runs manager"
                 }
             ]
         },
@@ -132,6 +136,13 @@
                     "group": "navigation"
                 }
                         
+                ,{
+                    "when": "view == teroshdl-view-runs",
+
+                    "command": "teroshdl.view.runs.run_all",
+                    "group": "navigation"
+                }
+                        
             ],
             "view/item/context": [
             
@@ -156,6 +167,12 @@
                     ,{
                         "when": "viewItem == source",
                         "command": "teroshdl.view.source.delete_source",
+                        "group": "inline"
+                    }
+                            
+                    ,{
+                        "when": "viewItem == run",
+                        "command": "teroshdl.view.runs.run",
                         "group": "inline"
                     }
                             
@@ -254,6 +271,22 @@
                     "dark": "resources/dark/dash.svg"
                 },
                 "title": "Delete source"
+            }, 
+            {
+                "command": "teroshdl.view.runs.run_all",
+                "icon": {
+                    "light": "resources/light/run-all.svg",
+                    "dark": "resources/dark/run-all.svg"
+                },
+                "title": "Run all"
+            }, 
+            {
+                "command": "teroshdl.view.runs.run",
+                "icon": {
+                    "light": "resources/light/run.svg",
+                    "dark": "resources/dark/run.svg"
+                },
+                "title": "Run"
             }, 
             {
                 "command": "teroshdl.generate_template",

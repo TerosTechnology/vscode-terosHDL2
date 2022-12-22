@@ -57,6 +57,20 @@
   when: "viewItem == source"
   group: "inline"
 
+## Runs
+- name: view.runs.run_all
+  title: "Run all"
+  icon: run-all
+  where: ["view/title"]
+  when: "view == teroshdl-view-runs"
+
+- name: view.runs.run
+  title: "Run"
+  icon: run
+  where: ["view/item/context"]
+  when: "viewItem == run"
+  group: "inline"
+
 ################################################################################
 # Editor
 ################################################################################
