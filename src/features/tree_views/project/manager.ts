@@ -20,18 +20,20 @@
 import * as vscode from "vscode";
 import * as element from "./element";
 import { Multi_project_manager } from 'teroshdl2/out/project_manager/multi_project_manager';
+import * as events from "events";
 
 export class Project_manager {
     private tree : element.ProjectProvider;
     private project_manager : Multi_project_manager;
-    private project_emitter = new vscode.EventEmitter<element.Project[] | undefined>();
+    private emitter : events.EventEmitter;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    constructor(context: vscode.ExtensionContext, manager: Multi_project_manager) {
+    constructor(context: vscode.ExtensionContext, manager: Multi_project_manager, emitter : events.EventEmitter) {
         this.set_commands();
 
+        this.emitter = emitter;
         this.project_manager = manager;
         this.tree = new element.ProjectProvider(manager);
         
@@ -103,7 +105,7 @@ export class Project_manager {
     rename_project(item: element.Project){}
 
     refresh(){
-        vscode.commands.executeCommand("teroshdl.view.refresh");
+        this.emitter.emit('refresh');
     }
 
     refresh_tree(){

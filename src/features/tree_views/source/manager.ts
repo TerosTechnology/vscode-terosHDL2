@@ -22,17 +22,20 @@ import * as element from "./element";
 import * as utils from "./utils";
 import { Multi_project_manager } from 'teroshdl2/out/project_manager/multi_project_manager';
 import * as teroshdl2 from 'teroshdl2';
+import * as events from "events";
 
 export class Source_manager {
     private tree: element.ProjectProvider;
     private project_manager: Multi_project_manager;
+    private emitter : events.EventEmitter;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    constructor(context: vscode.ExtensionContext, manager: Multi_project_manager) {
+    constructor(context: vscode.ExtensionContext, manager: Multi_project_manager, emitter : events.EventEmitter) {
         this.set_commands();
 
+        this.emitter = emitter;
         this.project_manager = manager;
         this.tree = new element.ProjectProvider(manager);
 
@@ -67,16 +70,6 @@ export class Source_manager {
             // Add from browser
             if (picker_value === element_types[0]) {
                 await utils.add_sources_from_open_dialog(this.project_manager, prj_name, "");
-                // const source_path_list = await utils.get_from_open_dialog(true);
-                // source_path_list.forEach(source_path => {
-                //     const f : teroshdl2.project_manager.common.t_file_reduced = {
-                //         name: source_path,
-                //         is_include_file: false,
-                //         include_path: "",
-                //         logical_name: ""
-                //     };
-                //     this.project_manager.add_file(prj_name, f);
-                // });
             }
             // Add from CSV
             else if (picker_value === element_types[1]) {
@@ -144,7 +137,7 @@ export class Source_manager {
     }
 
     refresh(){
-        vscode.commands.executeCommand("teroshdl.view.refresh");
+        this.emitter.emit('refresh');
     }
 
     refresh_tree(){

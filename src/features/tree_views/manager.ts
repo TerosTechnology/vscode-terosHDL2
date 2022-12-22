@@ -19,23 +19,26 @@
 
 import {Project_manager} from "./project/manager";
 import {Source_manager} from "./source/manager";
+import * as events from "events";
 
 import * as vscode from "vscode";
 import { Multi_project_manager } from 'teroshdl2/out/project_manager/multi_project_manager';
 
+let project_manager : Project_manager;
+let source_manager : Source_manager;
+
 export class Tree_view_manager{
-    private project_manager : Project_manager;
-    private source_manager : Source_manager;
+    private emitter : events.EventEmitter = new events.EventEmitter();
 
     constructor(context: vscode.ExtensionContext, manager: Multi_project_manager){
-        vscode.commands.registerCommand("teroshdl.view.refresh", () => this.refresh());
+        this.emitter.addListener('refresh', this.refresh);
 
-        this.project_manager = new Project_manager(context, manager);
-        this.source_manager = new Source_manager(context, manager);
+        project_manager = new Project_manager(context, manager, this.emitter);
+        source_manager = new Source_manager(context, manager, this.emitter);
     }
 
     refresh(){
-        this.source_manager.refresh_tree();
-        this.project_manager.refresh_tree();
+        source_manager.refresh_tree();
+        project_manager.refresh_tree();
     }
 }
