@@ -144,6 +144,10 @@ export class Source_manager {
     }
 
     refresh(){
+        vscode.commands.executeCommand("teroshdl.view.refresh");
+    }
+
+    refresh_tree(){
         this.tree.refresh();
     }
 }

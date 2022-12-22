@@ -24,15 +24,14 @@ import { Multi_project_manager } from 'teroshdl2/out/project_manager/multi_proje
 export class Project_manager {
     private tree : element.ProjectProvider;
     private project_manager : Multi_project_manager;
-    private refresh_func: (void);
+    private project_emitter = new vscode.EventEmitter<element.Project[] | undefined>();
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    constructor(context: vscode.ExtensionContext, manager: Multi_project_manager, refresh_func:(void)) {
+    constructor(context: vscode.ExtensionContext, manager: Multi_project_manager) {
         this.set_commands();
 
-        this.refresh_func = refresh_func;
         this.project_manager = manager;
         this.tree = new element.ProjectProvider(manager);
         
@@ -104,6 +103,10 @@ export class Project_manager {
     rename_project(item: element.Project){}
 
     refresh(){
+        vscode.commands.executeCommand("teroshdl.view.refresh");
+    }
+
+    refresh_tree(){
         this.tree.refresh();
     }
 }
