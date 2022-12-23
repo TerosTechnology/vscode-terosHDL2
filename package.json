@@ -76,6 +76,16 @@
                 }
             ]
         },
+        "viewsWelcome": [
+            {
+                "view": "teroshdl-project",
+                "contents": "No TerosHDL project are open.\n[Add Project](command:teroshdl.view.project.add)\nTo learn more about how to use TerosHDL [read the documentation](https://terostechnology.github.io/terosHDLdoc/)."
+            },
+            {
+                "view": "edacation-actions",
+                "contents": "[Open Configuration](command:edacation.openProjectConfiguration)\n[Show RTL using Yosys](command:edacation.runYosysRTL)\n[Synthesize using Yosys](command:edacation.runYosysSynth)\n[Place and Route using nextpnr](command:edacation.runNextpnr)\n"
+            }
+      ],
 
         "grammars": [
             {

@@ -28,7 +28,6 @@ import {Logger} from "../logger";
 export class Runs_manager {
     private tree : element.ProjectProvider;
     private project_manager : Multi_project_manager;
-    private emitter : events.EventEmitter;
     private run_output_manager : Run_output_manager;
     private logger : Logger;
 
@@ -42,17 +41,17 @@ export class Runs_manager {
 
         this.logger = logger;
         this.run_output_manager = run_output_manager;
-        this.emitter = emitter;
         this.project_manager = manager;
         this.tree = new element.ProjectProvider(manager, run_output_manager);
         
-        context.subscriptions.push(vscode.window.registerTreeDataProvider(element.ProjectProvider.getViewID(), this.tree as element.BaseTreeDataProvider<element.Run>));
+        context.subscriptions.push(vscode.window.registerTreeDataProvider(element.ProjectProvider.getViewID(), 
+            this.tree as element.BaseTreeDataProvider<element.Run>));
     }
 
     set_commands(){
-        vscode.commands.registerCommand("teroshdl.view.runs.run_all", (item) => this.run(undefined));
+        vscode.commands.registerCommand("teroshdl.view.runs.run_all", () => this.run(undefined));
         vscode.commands.registerCommand("teroshdl.view.runs.run", (item) => this.run(item));
-        vscode.commands.registerCommand("teroshdl.view.runs.refresh", (item) => this.refresh([]));
+        vscode.commands.registerCommand("teroshdl.view.runs.refresh", () => this.refresh([]));
     }
 
     get_selected_project_name(): string | undefined {
@@ -99,8 +98,6 @@ export class Runs_manager {
             }
 
             const selfm = this;
-
-
 			const p = new Promise<void>(resolve => {
                 this.project_manager.run(prj_name, this.project_manager.get_config_global_config(), test_list, 
                     (function(result: teroshdl2.project_manager.tool_common.t_test_result[]) { 
@@ -119,16 +116,7 @@ export class Runs_manager {
                     }),
                 );
 			});
-
-
-			// const p = new Promise<void>(resolve => {
-			// 	setTimeout(() => {
-			// 		resolve();
-			// 	}, 5000);
-			// });
-
 			return p;
-
         });
     }
 
