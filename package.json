@@ -147,6 +147,13 @@
                     "group": "navigation"
                 }
                         
+                ,{
+                    "when": "view == teroshdl-view-runs",
+
+                    "command": "teroshdl.view.runs.refresh",
+                    "group": "navigation"
+                }
+                        
             ],
             "view/item/context": [
             
@@ -283,6 +290,14 @@
                     "dark": "resources/dark/run-all.svg"
                 },
                 "title": "Run all"
+            }, 
+            {
+                "command": "teroshdl.view.runs.refresh",
+                "icon": {
+                    "light": "resources/light/refresh.svg",
+                    "dark": "resources/dark/refresh.svg"
+                },
+                "title": "Refresh"
             }, 
             {
                 "command": "teroshdl.view.runs.run",

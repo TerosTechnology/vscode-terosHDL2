@@ -16,10 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with teroshdl. If not, see <https://www.gnu.org/licenses/>.
 
-import { Multi_project_manager } from "teroshdl2/out/project_manager/multi_project_manager";
 import * as vscode from "vscode";
 import {get_icon} from "../utils";
-import * as teroshdl2 from 'teroshdl2';
 import {Run_output_manager} from "../run_output";
 
 

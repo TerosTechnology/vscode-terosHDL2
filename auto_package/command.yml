@@ -64,6 +64,12 @@
   where: ["view/title"]
   when: "view == teroshdl-view-runs"
 
+- name: view.runs.refresh
+  title: "Refresh"
+  icon: refresh
+  where: ["view/title"]
+  when: "view == teroshdl-view-runs"
+
 - name: view.runs.run
   title: "Run"
   icon: run

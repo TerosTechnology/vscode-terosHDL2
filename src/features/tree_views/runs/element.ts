@@ -20,7 +20,7 @@ import { Multi_project_manager } from "teroshdl2/out/project_manager/multi_proje
 import * as vscode from "vscode";
 import {get_icon} from "../utils";
 import * as teroshdl2 from 'teroshdl2';
-
+import {Run_output_manager} from "../run_output";
 
 export const VIEW_ID = "teroshdl-view-runs";
 
@@ -29,14 +29,14 @@ export const VIEW_ID = "teroshdl-view-runs";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export class Run extends vscode.TreeItem {
     public children: any[] | undefined;
-    public iconPath = get_icon("beaker");
     public contextValue = "run";
     // Element
     private name: string;
     private path: string;
     private location: any;
 
-    constructor(name: string, path: string, location: any, children?: any[]) {
+    constructor(name: string, path: string, location: any, successful: boolean | undefined, 
+        time: undefined | string, children?: any[]) {
         super(
             name,
             children === undefined ? vscode.TreeItemCollapsibleState.None : vscode.TreeItemCollapsibleState.Expanded
@@ -47,6 +47,20 @@ export class Run extends vscode.TreeItem {
         this.name = name;
         this.path = path;
         this.location = location;
+
+        if (successful === true){
+            this.iconPath = get_icon("passed");
+        }
+        else if (successful === false){
+            this.iconPath = get_icon("failed");
+        }
+        else{
+            this.iconPath = get_icon("beaker");
+        }
+
+        if (time !== undefined){
+            this.name = `${this.name} (${<string>time})`;
+        }
 
         // Command
         this.command = {
@@ -88,10 +102,12 @@ export class ProjectProvider extends BaseTreeDataProvider<TreeItem> {
 
     data: TreeItem[] = [];
     private project_manager : Multi_project_manager;
+    private run_output_manager : Run_output_manager;
 
-    constructor(project_manager : Multi_project_manager) {
+    constructor(project_manager : Multi_project_manager, run_output_manager : Run_output_manager) {
         super();
         this.project_manager = project_manager;
+        this.run_output_manager = run_output_manager;
     }
 
     getTreeItem(element: TreeItem): vscode.TreeItem | Thenable<vscode.TreeItem> {
@@ -109,9 +125,27 @@ export class ProjectProvider extends BaseTreeDataProvider<TreeItem> {
         return VIEW_ID;
     }
 
-    async refresh(): Promise<void> {
-        const prj_view : Run[]= [];
+    // async refresh(): Promise<void> {
+    //     const prj_view : Run[]= [];
 
+    //     const selected_project = this.project_manager.get_select_project();
+    //     if (selected_project.successful === false) {
+    //         return;
+    //     }
+    //     const prj_name = (<teroshdl2.project_manager.project_manager.Project_manager>selected_project.result).get_name();
+    //     const config = this.project_manager.get_config_global_config();
+
+    //     const runs_list = await this.project_manager.get_test_list(prj_name, config);
+    //     const runs_view : Run[]= [];
+    //     runs_list.forEach(run => {
+    //         runs_view.push(new Run(run.name, run.filename, run.location, undefined, undefined));
+    //     });
+
+    //     this.data = runs_view;
+    //     this._onDidChangeTreeData.fire();
+    // }
+
+    async refresh(): Promise<void> {
         const selected_project = this.project_manager.get_select_project();
         if (selected_project.successful === false) {
             return;
@@ -122,11 +156,26 @@ export class ProjectProvider extends BaseTreeDataProvider<TreeItem> {
         const runs_list = await this.project_manager.get_test_list(prj_name, config);
         const runs_view : Run[]= [];
         runs_list.forEach(run => {
-            runs_view.push(new Run(run.name, run.filename, run.location));
+            const result = this.get_successful(run.name);
+            runs_view.push(new Run(run.name, run.filename, run.location, result.successful, result.time));
         });
 
         this.data = runs_view;
         this._onDidChangeTreeData.fire();
+    }
+
+    get_successful(name: string) {
+        let successful : boolean | undefined = undefined;
+        let time : number | undefined = undefined;
+
+        const result_list = this.run_output_manager.get_results();
+        result_list.forEach(result => {
+            if (result.name === name){
+                successful = result.successful;
+                time = result.time;
+            }
+        });
+        return {successful: successful, time: time};
     }
 }
 
