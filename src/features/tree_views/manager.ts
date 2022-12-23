@@ -20,8 +20,9 @@
 import {Project_manager} from "./project/manager";
 import {Source_manager} from "./source/manager";
 import {Runs_manager} from "./runs/manager";
-import {Result_manager} from "./result/manager";
+import {Actions_manager} from "./actions/manager";
 import {Run_output_manager} from "./run_output";
+import {Watcher_manager} from "./watchers/manager";
 import {Logger} from "./logger";
 
 import * as events from "events";
@@ -32,17 +33,20 @@ let project_manager : Project_manager;
 let source_manager : Source_manager;
 let runs_manager : Runs_manager;
 let run_output : Run_output_manager = new Run_output_manager();
+let actions_manager : Actions_manager;
+let watcher_manager : Watcher_manager;
 
 export class Tree_view_manager{
-    private emitter : events.EventEmitter = new events.EventEmitter();
     private logger : Logger = new Logger();
 
-    constructor(context: vscode.ExtensionContext, manager: Multi_project_manager){
-        this.emitter.addListener('refresh', this.refresh);
+    constructor(context: vscode.ExtensionContext, manager: Multi_project_manager, emitter : events.EventEmitter){
+        emitter.addListener('refresh', this.refresh);
 
-        project_manager = new Project_manager(context, manager, this.emitter);
-        source_manager = new Source_manager(context, manager, this.emitter);
-        runs_manager = new Runs_manager(context, manager, this.emitter, run_output, this.logger);
+        project_manager = new Project_manager(context, manager, emitter);
+        source_manager = new Source_manager(context, manager, emitter);
+        runs_manager = new Runs_manager(context, manager, emitter, run_output, this.logger);
+        actions_manager = new Actions_manager(context, manager, emitter, run_output);
+        watcher_manager = new Watcher_manager(context, manager, emitter);
 
         this.refresh();
     }
@@ -51,6 +55,7 @@ export class Tree_view_manager{
         source_manager.refresh_tree();
         project_manager.refresh_tree();
         runs_manager.refresh_tree();
+        watcher_manager.refresh_tree();
     }
 }
 

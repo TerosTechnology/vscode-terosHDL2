@@ -23,8 +23,7 @@ import { Multi_project_manager } from 'teroshdl2/out/project_manager/multi_proje
 import * as events from "events";
 import {Run_output_manager} from "../run_output";
 
-export class Result_manager {
-    private tree : element.ProjectProvider;
+export class Actions_manager {
     private project_manager : Multi_project_manager;
     private emitter : events.EventEmitter;
     private run_output_manager : Run_output_manager;
@@ -38,17 +37,9 @@ export class Result_manager {
         this.run_output_manager = run_output_manager;
         this.emitter = emitter;
         this.project_manager = manager;
-        this.tree = new element.ProjectProvider(run_output_manager);
+        const tree = new element.ActionsProvider();
         
-        context.subscriptions.push(vscode.window.registerTreeDataProvider(element.ProjectProvider.getViewID(), this.tree as element.BaseTreeDataProvider<element.Result>));
-    }
-
-    refresh(){
-        this.emitter.emit('refresh');
-    }
-
-    refresh_tree(){
-        this.tree.refresh();
+        context.subscriptions.push(vscode.window.registerTreeDataProvider(element.ActionsProvider.getViewID(), tree));
     }
 }
 

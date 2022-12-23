@@ -29,19 +29,23 @@
             "teroshdl-project": [
                 {
                     "id": "teroshdl-project",
-                    "name": "Project manager"
+                    "name": "Projects"
                 },
                 {
                     "id": "teroshdl-view-source",
-                    "name": "Source manager"
+                    "name": "Sources"
+                },
+                {
+                    "id": "teroshdl-view-watcher",
+                    "name": "Watchers"
                 },
                 {
                     "id": "teroshdl-view-runs",
-                    "name": "Runs manager"
+                    "name": "Runs"
                 },
                 {
-                    "id": "teroshdl-view-result",
-                    "name": "Results"
+                    "id": "teroshdl-view-actions",
+                    "name": "Actions"
                 }
             ]
         },
@@ -51,8 +55,8 @@
                 "contents": "No TerosHDL project are open.\n[Add Project](command:teroshdl.view.project.add)\nTo learn more about how to use TerosHDL [read the documentation](https://terostechnology.github.io/terosHDLdoc/)."
             },
             {
-                "view": "edacation-actions",
-                "contents": "[Open Configuration](command:edacation.openProjectConfiguration)\n[Show RTL using Yosys](command:edacation.runYosysRTL)\n[Synthesize using Yosys](command:edacation.runYosysSynth)\n[Place and Route using nextpnr](command:edacation.runNextpnr)\n"
+                "view": "teroshdl-view-actions",
+                "contents": "[Open Configuration Menu](command:teroshdl.view.project.configuration)\n[Export configuration](command:teroshdl.view.project.export_configuration)\n[Load configuration](command:teroshdl.view.project.load_configuration)\n\n[Documentation](command:teroshdl.documentation)"
             }
       ],
 {% filter indent(width=8) %}

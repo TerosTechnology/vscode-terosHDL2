@@ -19,7 +19,7 @@
 /* eslint-disable @typescript-eslint/class-name-casing */
 import * as vscode from "vscode";
 import * as element from "./element";
-import * as utils from "./utils";
+import * as utils from "../utils";
 import { Multi_project_manager } from 'teroshdl2/out/project_manager/multi_project_manager';
 import * as teroshdl2 from 'teroshdl2';
 import * as events from "events";
@@ -64,7 +64,7 @@ export class Source_manager {
 
         // Add source
         if (picker_value === element_types[0]) {
-            const element_types = ["Browser", "Load from CSV"];
+            const element_types = ["Browser", "Load from CSV", "Load from VUnit run.py"];
             const picker_value = await utils.get_picker_value(element_types, "Add from:");
 
             // Add from browser
@@ -73,10 +73,15 @@ export class Source_manager {
             }
             // Add from CSV
             else if (picker_value === element_types[1]) {
-                const csv_path = await utils.get_from_open_dialog(false);
+                const csv_path = await utils.get_from_open_dialog(false, true, false, 
+                    "Select CSV file", {'CSV file (*.csv, *.CSV)': ['csv', 'CSV']});
                 if (csv_path.length !== 0) {
                     this.project_manager.add_file_from_csv(prj_name, csv_path[0]);
                 }
+            }
+            // Add from VUnit
+            else if (picker_value === element_types[2]) {
+                await utils.add_sources_from_vunit(this.project_manager, prj_name);
             }
         }
         // Add library

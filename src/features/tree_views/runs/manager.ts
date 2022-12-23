@@ -69,7 +69,7 @@ export class Runs_manager {
         vscode.window.withProgress({
             location: vscode.ProgressLocation.Window,
             cancellable: false,
-            title: 'TerosHDL: Test running'
+            title: 'TerosHDL: Tool running'
         }, async (progress) => {
         
             // Status bar to 0

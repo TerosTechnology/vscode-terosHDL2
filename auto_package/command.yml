@@ -10,12 +10,6 @@
 ################################################################################
 
 ## Project
-- name: view.project.configuration
-  title: "Open configuration menu"
-  icon: settings-gear
-  where: ["view/title"]
-  when: "view == teroshdl-project"
-
 - name: view.project.add
   title: "Add project"
   icon: add
@@ -57,6 +51,13 @@
   when: "viewItem == source"
   group: "inline"
 
+- name: view.source.select_toplevel
+  title: "Select source as toplevel"
+  icon: check
+  where: ["view/item/context"]
+  when: "viewItem == source"
+  group: "inline"
+
 ## Runs
 - name: view.runs.run_all
   title: "Run all"
@@ -75,6 +76,20 @@
   icon: run
   where: ["view/item/context"]
   when: "viewItem == run"
+  group: "inline"
+
+## Watcher
+- name: view.watcher.add
+  title: "Add"
+  icon: add
+  where: ["view/title"]
+  when: "view == teroshdl-view-watcher"
+
+- name: view.watcher.delete
+  title: "Delete watcher"
+  icon: dash
+  where: ["view/item/context"]
+  when: "viewItem == watcher"
   group: "inline"
 
 ################################################################################

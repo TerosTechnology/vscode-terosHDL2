@@ -35,6 +35,7 @@ import { Shutter_mode_manager } from "./features/shutter_mode";
 import { Config_manager } from "./features/config";
 import { Tree_view_manager } from "./features/tree_views/manager";
 import * as teroshdl2 from 'teroshdl2';
+import * as events from "events";
 
 const CONFIG_FILENAME = '.teroshdl2_config.json';
 const PRJ_FILENAME = '.teroshdl2_prj.json';
@@ -43,12 +44,14 @@ export class Teroshdl {
     private context: vscode.ExtensionContext;
     private manager: Multi_project_manager;
     private output_channel: Output_channel;
+    private emitter : events.EventEmitter = new events.EventEmitter();
 
     constructor(context: vscode.ExtensionContext, output_channgel: Output_channel) {
         const homedir = teroshdl2.utils.common.get_home_directory();
         const file_config_path = path_lib.join(homedir, CONFIG_FILENAME);
         const file_prj_path = path_lib.join(homedir, PRJ_FILENAME);
-        this.manager = new Multi_project_manager("", file_config_path, file_prj_path);
+
+        this.manager = new Multi_project_manager("", file_config_path, file_prj_path, this.emitter);
         this.context = context;
         this.output_channel = output_channgel;
     }
@@ -108,7 +111,7 @@ export class Teroshdl {
     }
 
     private init_tree_views() {
-        new Tree_view_manager(this.context, this.manager);
+        new Tree_view_manager(this.context, this.manager, this.emitter);
     }
 
 }

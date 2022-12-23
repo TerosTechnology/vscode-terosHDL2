@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/class-name-casing */
 // Copyright 2022 
 // Carlos Alberto Ruiz Naranjo [carlosruiznaranjo@gmail.com]
 //
@@ -19,68 +18,41 @@
 
 import { Multi_project_manager } from "teroshdl2/out/project_manager/multi_project_manager";
 import * as vscode from "vscode";
-import { get_icon } from "../utils";
-import * as teroshdl2 from 'teroshdl2';
-import * as path_lib from 'path';
+import {get_icon} from "../utils";
+import * as teroshdl2 from "teroshdl2";
+import * as path_lib from "path";
 
-
-export const VIEW_ID = "teroshdl-view-source";
-enum SOURCE_TREE_ELEMENT {
-    SOURCE = "source",
-    LIBRARY = "library",
-}
+export const VIEW_ID = "teroshdl-view-watcher";
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Elements
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-export class Source_tree_element extends vscode.TreeItem {
+export class Watcher extends vscode.TreeItem {
     public children: any[] | undefined;
-    private logical_name : string = "";
-    private name : string = "";
+    public iconPath = get_icon("search");
+    public contextValue = "watcher";
+    private name : string;
 
-    constructor(element_type: SOURCE_TREE_ELEMENT, name: string, select_check: boolean, logical_name: string, children?: any[]) {
+    constructor(name: string, children?: any[]) {
         super(
             name,
             children === undefined ? vscode.TreeItemCollapsibleState.None : vscode.TreeItemCollapsibleState.Expanded
         );
         // Common
         this.children = children;
-        this.logical_name = logical_name;
-        this.tooltip = name;
         this.name = name;
-
-        if (element_type === SOURCE_TREE_ELEMENT.LIBRARY) {
-            this.label = name;
-            this.contextValue = "library";
-            this.iconPath = get_icon("library");
-        }
-        else {
-            if (select_check === true){
-                this.label = `${path_lib.basename(name)} (current)`;
-            }
-            else{
-                this.label = path_lib.basename(name);
-            }
-            this.contextValue = "source";
-            this.iconPath = get_icon("file");
-            this.command = {
-                title: 'Open file',
-                command: 'vscode.open',
-                arguments: [vscode.Uri.file(name)]
-            };
-            // this.command = {
-            //     command: "teroshdl.view.source.select_toplevel",
-            //     title: "Select project",
-            //     arguments: [this],
-            // };
-        }
+        // Element
+        this.tooltip = name;
+        this.label = path_lib.basename(name);
+        this.command = {
+            title: 'Open file',
+            command: 'vscode.open',
+            arguments: [vscode.Uri.file(name)]
+        };
     }
 
-    get_name() : string{
+    public get_name() : string{
         return this.name;
-    }
-    get_logical_name() : string{
-        return this.logical_name;
     }
 }
 
@@ -97,14 +69,14 @@ export abstract class BaseTreeDataProvider<T> implements vscode.TreeDataProvider
 }
 
 export class ProjectProvider extends BaseTreeDataProvider<TreeItem> {
-
+    
     private _onDidChangeTreeData: vscode.EventEmitter<void> = new vscode.EventEmitter<void>();
     readonly onDidChangeTreeData: vscode.Event<void> = this._onDidChangeTreeData.event;
 
     data: TreeItem[] = [];
-    private project_manager: Multi_project_manager;
+    private project_manager : Multi_project_manager;
 
-    constructor(project_manager: Multi_project_manager) {
+    constructor(project_manager : Multi_project_manager) {
         super();
         this.project_manager = project_manager;
     }
@@ -125,6 +97,7 @@ export class ProjectProvider extends BaseTreeDataProvider<TreeItem> {
     }
 
     refresh(): void {
+        const watcher_view : Watcher[] = [];
         const selected_project = this.project_manager.get_select_project();
         if (selected_project.successful === false) {
             this.data = [];
@@ -133,36 +106,12 @@ export class ProjectProvider extends BaseTreeDataProvider<TreeItem> {
         }
 
         const prj_definition = (<teroshdl2.project_manager.project_manager.Project_manager>selected_project.result).get_project_definition();
-        const logical_list = prj_definition.file_manager.get_by_logical_name();
-        const toplevel = prj_definition.toplevel_path_manager.get();
+        const watcher_list = prj_definition.watcher_manager.get();
 
-        let source_view : Source_tree_element[] = [];
-        let empty_logical : Source_tree_element[] = [];
-        logical_list.forEach(logical_inst => {
-            const children_list : Source_tree_element[] = [];
-            logical_inst.file_list.forEach(file_inst => {
-                const name = file_inst.name;
-                const logical_name = file_inst.logical_name;
-                if (name !== ''){
-                    let select_check = false;
-                    if (toplevel.length !== 0 && toplevel[0] === name){
-                        select_check = true;
-                    }
-                    children_list.push(new Source_tree_element(SOURCE_TREE_ELEMENT.SOURCE, name, select_check, logical_name));
-                }
-            });
-            if (logical_inst.name !== ""){
-                source_view.push(new Source_tree_element(SOURCE_TREE_ELEMENT.LIBRARY, logical_inst.name, false, logical_inst.name, children_list));
-            }
-            else{
-                empty_logical = children_list;
-            }
+        watcher_list.forEach(watcher_inst => {
+            watcher_view.push(new Watcher(watcher_inst.path));
         });
-
-        //Add sources with empty logical name
-        source_view = source_view.concat(empty_logical);
-
-        this.data = source_view;
+        this.data = watcher_view;
         this._onDidChangeTreeData.fire();
     }
 }
@@ -174,7 +123,7 @@ export class TreeItem extends vscode.TreeItem {
         super(
             label,
             children === undefined ? vscode.TreeItemCollapsibleState.None :
-                vscode.TreeItemCollapsibleState.Collapsed);
+                vscode.TreeItemCollapsibleState.Expanded);
         this.children = children;
     }
 }
