@@ -38,10 +38,10 @@ export class Source_tree_element extends vscode.TreeItem {
     private logical_name : string = "";
     private name : string = "";
 
-    constructor(element_type: SOURCE_TREE_ELEMENT, name: string, select_check: boolean, logical_name: string, children?: any[]) {
+    constructor(element_type: SOURCE_TREE_ELEMENT, name: string, is_manual: boolean, select_check: boolean, logical_name: string, children?: any[]) {
         super(
             name,
-            children === undefined ? vscode.TreeItemCollapsibleState.None : vscode.TreeItemCollapsibleState.Expanded
+            children === undefined ? vscode.TreeItemCollapsibleState.None : vscode.TreeItemCollapsibleState.Collapsed
         );
         // Common
         this.children = children;
@@ -61,6 +61,14 @@ export class Source_tree_element extends vscode.TreeItem {
             else{
                 this.label = path_lib.basename(name);
             }
+
+            if (is_manual === true){
+                this.label = `${this.label} (M)`;
+            }
+            else{
+                this.label = `${this.label} (A)`;
+            }
+
             this.contextValue = "source";
             this.iconPath = get_icon("file");
             this.command = {
@@ -142,17 +150,18 @@ export class ProjectProvider extends BaseTreeDataProvider<TreeItem> {
             const children_list : Source_tree_element[] = [];
             logical_inst.file_list.forEach(file_inst => {
                 const name = file_inst.name;
+                const is_manual = file_inst.is_manual;
                 const logical_name = file_inst.logical_name;
                 if (name !== ''){
                     let select_check = false;
                     if (toplevel.length !== 0 && toplevel[0] === name){
                         select_check = true;
                     }
-                    children_list.push(new Source_tree_element(SOURCE_TREE_ELEMENT.SOURCE, name, select_check, logical_name));
+                    children_list.push(new Source_tree_element(SOURCE_TREE_ELEMENT.SOURCE, name, is_manual, select_check, logical_name));
                 }
             });
             if (logical_inst.name !== ""){
-                source_view.push(new Source_tree_element(SOURCE_TREE_ELEMENT.LIBRARY, logical_inst.name, false, logical_inst.name, children_list));
+                source_view.push(new Source_tree_element(SOURCE_TREE_ELEMENT.LIBRARY, logical_inst.name, false, false, logical_inst.name, children_list));
             }
             else{
                 empty_logical = children_list;

@@ -38,9 +38,24 @@ let watcher_manager : Watcher_manager;
 
 export class Tree_view_manager{
     private logger : Logger = new Logger();
+    private statusbar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
 
     constructor(context: vscode.ExtensionContext, manager: Multi_project_manager, emitter : events.EventEmitter){
+        context.subscriptions.push(this.statusbar);
+
+        const slm = this;
+
         emitter.addListener('refresh', this.refresh);
+        emitter.addListener('loading', (function () {
+                slm.statusbar.text = `$(loading) TerosHDL: loading project..`;
+                slm.statusbar.show();
+            })
+        );
+        emitter.addListener('loaded', (function () {
+                slm.statusbar.text = `$(megaphone) TerosHDL: project loaded!`;
+                slm.statusbar.show();
+            })
+        );
 
         project_manager = new Project_manager(context, manager, emitter);
         source_manager = new Source_manager(context, manager, emitter);
@@ -57,5 +72,21 @@ export class Tree_view_manager{
         runs_manager.refresh_tree();
         watcher_manager.refresh_tree();
     }
+
+    // prj_loading(slm: any){
+    //     // if (this.statusbar === undefined){
+    //     //     this.statusbar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
+    //     //     this.context.subscriptions.push(this.statusbar);
+    //     // }
+    //     this.statusbar.text = `$(loading) TerosHDL: loading project..`;
+    //     this.statusbar.show();
+    // }
+
+    // prj_loaded(slm: any){
+    //     // if (this.statusbar !== undefined){
+    //         this.statusbar.text = `$(megaphone) TerosHDL: project loaded!`;
+    //     // }
+    // }
+
 }
 
