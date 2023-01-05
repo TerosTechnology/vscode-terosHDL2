@@ -23,21 +23,25 @@ import * as path_lib from "path";
 import { Multi_project_manager } from 'teroshdl2/out/project_manager/multi_project_manager';
 import * as events from "events";
 import * as utils from "../utils";
+import {Run_output_manager} from "../run_output";
 
 export class Project_manager {
     private tree : element.ProjectProvider;
     private project_manager : Multi_project_manager;
     private emitter : events.EventEmitter;
+    private run_output_manager : Run_output_manager;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    constructor(context: vscode.ExtensionContext, manager: Multi_project_manager, emitter : events.EventEmitter) {
+    constructor(context: vscode.ExtensionContext, manager: Multi_project_manager, emitter : events.EventEmitter,
+        run_output_manager: Run_output_manager) {
         this.set_commands();
 
         this.emitter = emitter;
         this.project_manager = manager;
         this.tree = new element.ProjectProvider(manager);
+        this.run_output_manager = run_output_manager;
         
         context.subscriptions.push(vscode.window.registerTreeDataProvider(element.ProjectProvider.getViewID(), this.tree as element.BaseTreeDataProvider<element.Project>));
         vscode.commands.registerCommand("teroshdl.view.project.configuration", () => this.config());
@@ -101,7 +105,7 @@ export class Project_manager {
             const project_name = await utils.get_from_input_box("Set the project name", "Project name");
             if (project_name !== undefined) {
                 this.project_manager.create_project(project_name);
-                await utils.add_sources_from_vunit(this.project_manager, project_name);
+                await utils.add_sources_from_vunit(this.project_manager, project_name, true);
                 this.refresh();
             }
         }
@@ -139,6 +143,7 @@ export class Project_manager {
 
     select_project(item: element.Project){
         this.project_manager.select_project_current(item.get_project_name());
+        this.run_output_manager.clear();
         this.refresh();
     }
 

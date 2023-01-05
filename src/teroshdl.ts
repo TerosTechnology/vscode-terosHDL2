@@ -36,6 +36,7 @@ import { Config_manager } from "./features/config";
 import { Tree_view_manager } from "./features/tree_views/manager";
 import * as teroshdl2 from 'teroshdl2';
 import * as events from "events";
+import * as cmd from "./utils/commands";
 
 const CONFIG_FILENAME = '.teroshdl2_config.json';
 const PRJ_FILENAME = '.teroshdl2_prj.json';
@@ -47,6 +48,10 @@ export class Teroshdl {
     private emitter : events.EventEmitter = new events.EventEmitter();
 
     constructor(context: vscode.ExtensionContext, output_channgel: Output_channel) {
+        vscode.commands.registerCommand("teroshdl.open", (ags) => cmd.open_file(ags) );
+
+
+
         const homedir = teroshdl2.utils.common.get_home_directory();
         const file_config_path = path_lib.join(homedir, CONFIG_FILENAME);
         const file_prj_path = path_lib.join(homedir, PRJ_FILENAME);

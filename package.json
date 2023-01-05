@@ -75,6 +75,10 @@
                     "name": "Runs"
                 },
                 {
+                    "id": "teroshdl-view-output",
+                    "name": "Outputs"
+                },
+                {
                     "id": "teroshdl-view-actions",
                     "name": "Actions"
                 }
@@ -252,6 +256,10 @@
             {
                 "command": "teroshdl.go_to_parent",
                 "title": "Go to parent file"
+            }, 
+            {
+                "command": "teroshdl.open",
+                "title": "Open file with TerosHDL"
             }, 
             {
                 "command": "teroshdl.view.project.add",
@@ -528,7 +536,8 @@
         "teroshdl2": "https://github.com/TerosTechnology/colibri2.git#main",
         "tmp": "0.2.1",
         "vscode-languageclient": "7.0.0-next.6",
-        "xml2js": "0.4.23"
+        "xml2js": "0.4.23",
+        "open": "8.4.0"
     },
     "devDependencies": {
         "@types/glob": "^7.1.1",

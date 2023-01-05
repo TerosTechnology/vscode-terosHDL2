@@ -27,59 +27,44 @@ export const VIEW_ID = "teroshdl-view-runs";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Elements
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-export class Run extends vscode.TreeItem {
+export class Output extends vscode.TreeItem {
     public children: any[] | undefined;
-    public contextValue = "run";
+    public contextValue = "output";
     // Element
-    private suite_name: string;
     private name: string;
     private path: string;
-    private location: any;
 
-    constructor(suite_name: string, name: string, path: string, location: any, successful: boolean | undefined,
-        time: undefined | string, children?: any[]) {
+    constructor(name: string, path: string, type: teroshdl2.project_manager.tool_common.e_artifact_type
+        , children?: any[]) {
 
         super(
             name,
             children === undefined ? vscode.TreeItemCollapsibleState.None : vscode.TreeItemCollapsibleState.Expanded
         );
-        let name_inst = suite_name === "" ? name : `${suite_name}.${name}`;
-        name_inst = time === undefined ? name_inst : `${name} (${<string>time})`;
-
-        this.label = name_inst;
 
         // Common
         this.children = children;
         // Element
-        this.suite_name = suite_name;
         this.name = name;
         this.path = path;
-        this.location = location;
 
-        if (successful === true) {
-            this.iconPath = get_icon("passed");
-        }
-        else if (successful === false) {
-            this.iconPath = get_icon("failed");
+        if (type === teroshdl2.project_manager.tool_common.e_artifact_type.HTML) {
+            this.iconPath = get_icon("globe");
+            this.command = {
+                title: 'Open file',
+                command: 'teroshdl.open',
+                arguments: [vscode.Uri.file(path)]
+            };
         }
         else {
-            this.iconPath = get_icon("beaker");
+            this.iconPath = get_icon("file");
+            this.command = {
+                title: 'Open file',
+                command: 'vscode.open',
+                arguments: [vscode.Uri.file(path)]
+            };
         }
 
-        if (time !== undefined) {
-            this.name = `${this.name} (${<string>time})`;
-        }
-
-        // Command
-        this.command = {
-            title: 'Open file',
-            command: 'vscode.open',
-            arguments: [vscode.Uri.file(path)]
-        };
-    }
-
-    get_suite_name() {
-        return this.suite_name;
     }
 
     get_name() {
@@ -88,10 +73,6 @@ export class Run extends vscode.TreeItem {
 
     get_path() {
         return this.path;
-    }
-
-    get_location() {
-        return this.location;
     }
 }
 
@@ -144,22 +125,15 @@ export class ProjectProvider extends BaseTreeDataProvider<TreeItem> {
             this._onDidChangeTreeData.fire();
             return;
         }
-        const prj_name = (<teroshdl2.project_manager.project_manager.Project_manager>selected_project.result).get_name();
-        const config = this.project_manager.get_config_global_config();
 
-        const runs_list = await this.project_manager.get_test_list(prj_name, config);
-        const runs_view: Run[] = [];
-        runs_list.forEach(run => {
-            const result = this.get_successful(run.name);
-            runs_view.push(new Run(run.suite_name, run.name, run.filename, run.location, result.successful, result.time));
-        });
+        const runs_view: Output[] = [];
 
         const result_list = this.run_output_manager.get_results();
-        if (runs_list.length === 0 && result_list.length !== 0) {
-            result_list.forEach(result => {
-                runs_view.push(new Run(result.suite_name, result.name, result.test_path, undefined, result.successful, result.time.toString()));
+        result_list.forEach(result => {
+            result.artifact.forEach(artifact => {
+                runs_view.push(new Output(artifact.name, artifact.path, artifact.type));
             });
-        }
+        });
 
         this.data = runs_view;
         this._onDidChangeTreeData.fire();

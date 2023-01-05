@@ -30,6 +30,7 @@ export class Runs_manager {
     private project_manager : Multi_project_manager;
     private run_output_manager : Run_output_manager;
     private logger : Logger;
+    private emitter : events.EventEmitter;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constructor
@@ -43,6 +44,7 @@ export class Runs_manager {
         this.run_output_manager = run_output_manager;
         this.project_manager = manager;
         this.tree = new element.ProjectProvider(manager, run_output_manager);
+        this.emitter = emitter;
         
         context.subscriptions.push(vscode.window.registerTreeDataProvider(element.ProjectProvider.getViewID(), 
             this.tree as element.BaseTreeDataProvider<element.Run>));
@@ -89,10 +91,12 @@ export class Runs_manager {
             }
             else{
                 const test : teroshdl2.project_manager.tool_common.t_test_declaration = {
+                    suite_name: item.get_suite_name(),
                     name: item.get_name(),
                     test_type: "",
                     filename: item.get_path(),
-                    location: item.get_location()
+                    location: item.get_location(),
+                    hidden: false,
                 };
                 test_list = [test];
             }
@@ -123,6 +127,7 @@ export class Runs_manager {
     refresh(result: teroshdl2.project_manager.tool_common.t_test_result[]){
         this.run_output_manager.set_results(result);
         this.refresh_tree();
+        this.emitter.emit('refresh_output');
     }
 
     refresh_tree(){

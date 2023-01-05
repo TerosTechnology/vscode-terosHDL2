@@ -44,6 +44,10 @@
                     "name": "Runs"
                 },
                 {
+                    "id": "teroshdl-view-output",
+                    "name": "Outputs"
+                },
+                {
                     "id": "teroshdl-view-actions",
                     "name": "Actions"
                 }

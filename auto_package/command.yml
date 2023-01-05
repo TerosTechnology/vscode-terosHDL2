@@ -5,6 +5,9 @@
 - name: go_to_parent
   title: Go to parent file
 
+- name: open
+  title: Open file with TerosHDL
+
 ################################################################################
 # Project manager
 ################################################################################

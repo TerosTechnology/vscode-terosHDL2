@@ -23,6 +23,7 @@ import {Runs_manager} from "./runs/manager";
 import {Actions_manager} from "./actions/manager";
 import {Run_output_manager} from "./run_output";
 import {Watcher_manager} from "./watchers/manager";
+import {Output_manager} from "./output/manager";
 import {Logger} from "./logger";
 
 import * as events from "events";
@@ -35,6 +36,7 @@ let runs_manager : Runs_manager;
 let run_output : Run_output_manager = new Run_output_manager();
 let actions_manager : Actions_manager;
 let watcher_manager : Watcher_manager;
+let output_manager : Output_manager;
 
 export class Tree_view_manager{
     private logger : Logger = new Logger();
@@ -46,6 +48,10 @@ export class Tree_view_manager{
         const slm = this;
 
         emitter.addListener('refresh', this.refresh);
+        emitter.addListener('refresh_output', (function () {
+            output_manager.refresh_tree();
+        })
+    );
         emitter.addListener('loading', (function () {
                 slm.statusbar.text = `$(loading) TerosHDL: loading project..`;
                 slm.statusbar.show();
@@ -57,11 +63,12 @@ export class Tree_view_manager{
             })
         );
 
-        project_manager = new Project_manager(context, manager, emitter);
+        project_manager = new Project_manager(context, manager, emitter, run_output);
         source_manager = new Source_manager(context, manager, emitter);
         runs_manager = new Runs_manager(context, manager, emitter, run_output, this.logger);
         actions_manager = new Actions_manager(context, manager, emitter, run_output);
         watcher_manager = new Watcher_manager(context, manager, emitter);
+        output_manager = new Output_manager(context, manager, run_output);
 
         this.refresh();
     }
@@ -71,6 +78,7 @@ export class Tree_view_manager{
         project_manager.refresh_tree();
         runs_manager.refresh_tree();
         watcher_manager.refresh_tree();
+        output_manager.refresh_tree();
     }
 
     // prj_loading(slm: any){

@@ -19,22 +19,27 @@
 import * as teroshdl2 from "teroshdl2";
 
 export class Run_output_manager{
-    private res : teroshdl2.project_manager.tool_common.t_test_result[] = [];
-    private arct : teroshdl2.project_manager.tool_common.e_artifact_type[] = [];
+    private result_list : teroshdl2.project_manager.tool_common.t_test_result[] = [];
+    private artifact_list : teroshdl2.project_manager.tool_common.e_artifact_type[] = [];
 
-    public set_results(res : teroshdl2.project_manager.tool_common.t_test_result[]){
-        this.res = res;
+    public set_results(result_list : teroshdl2.project_manager.tool_common.t_test_result[]){
+        this.result_list = result_list;
     }
 
     public get_results() : teroshdl2.project_manager.tool_common.t_test_result[] {
-        return this.res;
+        return this.result_list;
     }
 
-    public set_artifacts(res : teroshdl2.project_manager.tool_common.e_artifact_type[]){
-        this.arct = res;
+    public set_artifacts(artifact_list : teroshdl2.project_manager.tool_common.e_artifact_type[]){
+        this.artifact_list = artifact_list;
     }
 
     public get_artifacts() : teroshdl2.project_manager.tool_common.e_artifact_type[]{
-        return this.arct;
+        return this.artifact_list;
+    }
+
+    public clear(){
+        this.result_list = [];
+        this.artifact_list = [];
     }
 }
