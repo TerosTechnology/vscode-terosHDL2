@@ -96,7 +96,6 @@ export class Runs_manager {
                     test_type: "",
                     filename: item.get_path(),
                     location: item.get_location(),
-                    hidden: false,
                 };
                 test_list = [test];
             }

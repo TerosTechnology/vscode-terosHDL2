@@ -36,16 +36,13 @@ export class Run extends vscode.TreeItem {
     private path: string;
     private location: any;
 
-    constructor(suite_name: string, name: string, path: string, location: any, successful: boolean | undefined,
-        time: undefined | string, children?: any[]) {
+    constructor(suite_name: string, name: string, path: string, location: any, children?: any[]) {
 
         super(
             name,
             children === undefined ? vscode.TreeItemCollapsibleState.None : vscode.TreeItemCollapsibleState.Expanded
         );
         let name_inst = suite_name === "" ? name : `${suite_name}.${name}`;
-        name_inst = time === undefined ? name_inst : `${name} (${<string>time})`;
-
         this.label = name_inst;
 
         // Common
@@ -56,19 +53,7 @@ export class Run extends vscode.TreeItem {
         this.path = path;
         this.location = location;
 
-        if (successful === true) {
-            this.iconPath = get_icon("passed");
-        }
-        else if (successful === false) {
-            this.iconPath = get_icon("failed");
-        }
-        else {
-            this.iconPath = get_icon("beaker");
-        }
-
-        if (time !== undefined) {
-            this.name = `${this.name} (${<string>time})`;
-        }
+        this.iconPath = get_icon("beaker");
 
         // Command
         this.command = {
@@ -150,16 +135,8 @@ export class ProjectProvider extends BaseTreeDataProvider<TreeItem> {
         const runs_list = await this.project_manager.get_test_list(prj_name, config);
         const runs_view: Run[] = [];
         runs_list.forEach(run => {
-            const result = this.get_successful(run.name);
-            runs_view.push(new Run(run.suite_name, run.name, run.filename, run.location, result.successful, result.time));
+            runs_view.push(new Run(run.suite_name, run.name, run.filename, run.location));
         });
-
-        const result_list = this.run_output_manager.get_results();
-        if (runs_list.length === 0 && result_list.length !== 0) {
-            result_list.forEach(result => {
-                runs_view.push(new Run(result.suite_name, result.name, result.test_path, undefined, result.successful, result.time.toString()));
-            });
-        }
 
         this.data = runs_view;
         this._onDidChangeTreeData.fire();

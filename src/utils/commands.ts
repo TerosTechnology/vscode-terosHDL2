@@ -17,8 +17,6 @@
 import * as opn from 'open';
 import * as vscode from 'vscode';
 
-
 export function open_file(args: vscode.Uri){
     opn(`${'file://'}${args.fsPath}`);
-    console.log(8)
 }

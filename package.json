@@ -440,7 +440,7 @@
             "id": "tcl",
             "aliases": ["TCL", "tcl"],
             "configuration": "./configs/tcl.configuration.json",
-            "extensions": [".tcl"]
+            "extensions": [".tcl", ".pro"]
         }
 
         ,{

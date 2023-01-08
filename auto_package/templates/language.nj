@@ -39,7 +39,8 @@
             "tcl"
         ],
         "extensions": [
-            ".tcl"
+            ".tcl",
+            ".pro"
         ],
         "configuration": "./configs/tcl.configuration.json"
     },

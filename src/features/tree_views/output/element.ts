@@ -22,7 +22,7 @@ import { get_icon } from "../utils";
 import * as teroshdl2 from 'teroshdl2';
 import { Run_output_manager } from "../run_output";
 
-export const VIEW_ID = "teroshdl-view-runs";
+export const VIEW_ID = "teroshdl-view-output";
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Elements
@@ -34,12 +34,15 @@ export class Output extends vscode.TreeItem {
     private name: string;
     private path: string;
 
-    constructor(name: string, path: string, type: teroshdl2.project_manager.tool_common.e_artifact_type
-        , children?: any[]) {
+    constructor(name: string, path: string, successful: boolean | undefined,
+        artifact_type: teroshdl2.project_manager.tool_common.e_artifact_type | undefined,
+        element_type: teroshdl2.project_manager.tool_common.e_element_type | undefined,
+        time: number | undefined,
+        children?: any[]) {
 
         super(
             name,
-            children === undefined ? vscode.TreeItemCollapsibleState.None : vscode.TreeItemCollapsibleState.Expanded
+            children === undefined ? vscode.TreeItemCollapsibleState.None : vscode.TreeItemCollapsibleState.Collapsed
         );
 
         // Common
@@ -48,8 +51,31 @@ export class Output extends vscode.TreeItem {
         this.name = name;
         this.path = path;
 
-        if (type === teroshdl2.project_manager.tool_common.e_artifact_type.HTML) {
-            this.iconPath = get_icon("globe");
+        if (time !== undefined) {
+            this.name = `${this.name} (${time.toString()})`;
+        }
+
+        if (artifact_type === undefined) {
+            if (successful === true) {
+                this.iconPath = get_icon("passed");
+            }
+            else if (successful === false) {
+                this.iconPath = get_icon("failed");
+            }
+            else {
+                this.iconPath = get_icon("beaker");
+            }
+        }
+        else if (artifact_type === teroshdl2.project_manager.tool_common.e_artifact_type.CONSOLE_LOG) {
+            this.iconPath = get_icon("console");
+            this.command = {
+                title: 'Open file',
+                command: 'teroshdl.open',
+                arguments: [vscode.Uri.file(path)]
+            };
+        }
+        else if (artifact_type === teroshdl2.project_manager.tool_common.e_artifact_type.SUMMARY) {
+            this.iconPath = get_icon("note");
             this.command = {
                 title: 'Open file',
                 command: 'teroshdl.open',
@@ -130,9 +156,17 @@ export class ProjectProvider extends BaseTreeDataProvider<TreeItem> {
 
         const result_list = this.run_output_manager.get_results();
         result_list.forEach(result => {
+            const artifact_list: Output[] = [];
             result.artifact.forEach(artifact => {
-                runs_view.push(new Output(artifact.name, artifact.path, artifact.type));
+                artifact_list.push(new Output(artifact.name, artifact.path, undefined, artifact.artifact_type, 
+                    artifact.element_type, undefined));
             });
+            if (artifact_list.length !== 0){
+                runs_view.push(new Output(result.name, result.name, result.successful, undefined, undefined, result.time, artifact_list));
+            }
+            else{
+                runs_view.push(new Output(result.name, result.name, result.successful, undefined, undefined, result.time));
+            }
         });
 
         this.data = runs_view;
